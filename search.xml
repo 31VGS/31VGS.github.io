@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Wx-app学习笔记</title>
+      <link href="/2022/02/22/wx/"/>
+      <url>/2022/02/22/wx/</url>
+      
+        <content type="html"><![CDATA[<h1 id="微信小程序知识点记录"><a href="#微信小程序知识点记录" class="headerlink" title="微信小程序知识点记录"></a>微信小程序知识点记录</h1><h2 id="全局配置"><a href="#全局配置" class="headerlink" title="全局配置"></a>全局配置</h2><h3 id="window"><a href="#window" class="headerlink" title="window"></a>window</h3><p>用于设置小程序的状态栏、导航条、标题、窗口背景色。  </p><ul><li><strong>navigationBarBackgroundColor</strong>  导航栏背景颜色，如 #000000</li><li><strong>navigationBarTextStyle</strong>    导航栏标题颜色，仅支持 black / white</li><li><strong>navigationBarTitleText</strong> 导航栏标题文字内容</li><li><strong>backgroundColor</strong> 窗口的背景色</li><li><strong>backgroundTextStyle</strong> 下拉 loading 的样式，仅支持 dark / light</li><li><strong>enablePullDownRefresh</strong> 是否开启全局的下拉刷新<h3 id="tabBar"><a href="#tabBar" class="headerlink" title="tabBar"></a>tabBar</h3><img src="https://res.wx.qq.com/wxdoc/dist/assets/img/tabbar.ce1b3c5b.png" alt="tabBar"><h2 id="框架接口"><a href="#框架接口" class="headerlink" title="框架接口"></a>框架接口</h2><h3 id="页面page"><a href="#页面page" class="headerlink" title="页面page"></a>页面page</h3><h4 id="data"><a href="#data" class="headerlink" title="data"></a>data</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;view&gt;&#123;&#123;text&#125;&#125;&lt;/view&gt;</span><br><span class="line">&lt;view&gt;&#123;&#123;array[0].msg&#125;&#125;&lt;/view&gt;</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    text: &#x27;init data&#x27;,</span><br><span class="line">    array: [&#123;msg: &#x27;1&#x27;&#125;, &#123;msg: &#x27;2&#x27;&#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><h3 id="生命周期回调函数"><a href="#生命周期回调函数" class="headerlink" title="生命周期回调函数"></a>生命周期回调函数</h3></li></ul><p><strong>onLoad(Object query)</strong><br>页面加载时触发。一个页面只会调用一次，可以在 onLoad 的参数中获取打开当前页面路径中的参数。<br><strong>onShow()</strong><br>页面显示/切入前台时触发。<br><strong>onReady()</strong><br>页面初次渲染完成时触发。一个页面只会调用一次，代表页面已经准备妥当，可以和视图层进行交互。<br><strong>onHide()</strong><br>页面隐藏/切入后台时触发。 如 wx.navigateTo 或底部 tab 切换到其他页面，小程序切入后台等</p><h2 id="WXML语法参考"><a href="#WXML语法参考" class="headerlink" title="WXML语法参考"></a>WXML语法参考</h2><h3 id="wx-for"><a href="#wx-for" class="headerlink" title="wx:for"></a>wx:for</h3><p>wx:for搭配使用wx:key=”*this”<br>wx:for=”“ wx:key=”*this”</p><h3 id="wx-if"><a href="#wx-if" class="headerlink" title="wx:if"></a>wx:if</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;view wx:if=&quot;&#123;&#123;length &gt; 5&#125;&#125;&quot;&gt; 1 &lt;/view&gt;</span><br><span class="line">&lt;view wx:elif=&quot;&#123;&#123;length &gt; 2&#125;&#125;&quot;&gt; 2 &lt;/view&gt;</span><br><span class="line">&lt;view wx:else&gt; 3 &lt;/view&gt;</span><br></pre></td></tr></table></figure><h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MarkDown学习笔记</title>
       <link href="/2022/02/21/MarkDown/"/>
       <url>/2022/02/21/MarkDown/</url>
