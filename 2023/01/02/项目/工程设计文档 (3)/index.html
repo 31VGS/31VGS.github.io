@@ -1,0 +1,983 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>基于机器学习的乳腺癌影像分析 | Spirit Time House</title><meta name="keywords" content="项目"><meta name="author" content="Jianxiang Guo,19030100392@stu.xidain.edu.cn"><meta name="copyright" content="Jianxiang Guo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于机器学习的乳腺癌影像分析异常检测数据集划分使用留出法，将1345个数据分出1000个训练集和345个测试集 训练集中良性占63％，恶性占37% 测试集中良性占79%，恶性占21% 训练集导出至train_data.csv 测试集导出至test_data.csv     N（0，良性） P（1，恶性）    训练集 634 366   测试集 273 72   DBSCAN思路及原理DBSCAN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于机器学习的乳腺癌影像分析">
+<meta property="og:url" content="http://example.com/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/index.html">
+<meta property="og:site_name" content="Spirit Time House">
+<meta property="og:description" content="基于机器学习的乳腺癌影像分析异常检测数据集划分使用留出法，将1345个数据分出1000个训练集和345个测试集 训练集中良性占63％，恶性占37% 测试集中良性占79%，恶性占21% 训练集导出至train_data.csv 测试集导出至test_data.csv     N（0，良性） P（1，恶性）    训练集 634 366   测试集 273 72   DBSCAN思路及原理DBSCAN">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2019255582.webp">
+<meta property="article:published_time" content="2023-01-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-28T15:39:43.424Z">
+<meta property="article:author" content="Jianxiang Guo">
+<meta property="article:tag" content="项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2019255582.webp"><link rel="shortcut icon" href="/img/%E6%81%90%E6%80%96%E7%94%B5%E5%BD%B1%E2%80%94%E2%80%94%E7%94%B5%E9%94%AF%E6%83%8A%E9%AD%82.png"><link rel="canonical" href="http://example.com/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Jianxiang Guo","link":"链接: ","source":"来源: Spirit Time House","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '基于机器学习的乳腺癌影像分析',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-28 23:39:43'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/877749684.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/games/index.html"><i class="fa-fw fa fa-camera-retro"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/books/index.html"><i class="fa-fw fa fa-music"></i><span> 书籍</span></a></li><li><a class="site-page child" href="/movies/index.html"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2019255582.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Spirit Time House</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/games/index.html"><i class="fa-fw fa fa-camera-retro"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/books/index.html"><i class="fa-fw fa fa-music"></i><span> 书籍</span></a></li><li><a class="site-page child" href="/movies/index.html"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">基于机器学习的乳腺癌影像分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-01T16:00:00.000Z" title="发表于 2023-01-02 00:00:00">2023-01-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-28T15:39:43.424Z" title="更新于 2023-02-28 23:39:43">2023-02-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">9.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>37分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="基于机器学习的乳腺癌影像分析"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="基于机器学习的乳腺癌影像分析"><a href="#基于机器学习的乳腺癌影像分析" class="headerlink" title="基于机器学习的乳腺癌影像分析"></a>基于机器学习的乳腺癌影像分析</h1><h2 id="异常检测"><a href="#异常检测" class="headerlink" title="异常检测"></a><strong>异常检测</strong></h2><h3 id="数据集划分"><a href="#数据集划分" class="headerlink" title="数据集划分"></a><strong>数据集划分</strong></h3><p>使用留出法，将1345个数据分出1000个训练集和345个测试集</p>
+<p>训练集中良性占63％，恶性占37%</p>
+<p>测试集中良性占79%，恶性占21%</p>
+<p>训练集导出至train_data.csv</p>
+<p>测试集导出至test_data.csv</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"><strong>N（0，良性）</strong></th>
+<th align="left"><strong>P（1，恶性）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">训练集</td>
+<td align="left">634</td>
+<td align="left">366</td>
+</tr>
+<tr>
+<td align="left">测试集</td>
+<td align="left">273</td>
+<td align="left">72</td>
+</tr>
+</tbody></table>
+<h3 id="DBSCAN"><a href="#DBSCAN" class="headerlink" title="DBSCAN"></a><strong>DBSCAN</strong></h3><h4 id="思路及原理"><a href="#思路及原理" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>DBSCAN的算法步骤比较简单，主要分成两步。</p>
+<h5 id="1、寻找核心点形成临时聚类簇"><a href="#1、寻找核心点形成临时聚类簇" class="headerlink" title="1、寻找核心点形成临时聚类簇"></a><strong>1、寻找核心点形成临时聚类簇</strong></h5><p>扫描全部样本点，如果某个样本点R半径范围内点数目&gt;&#x3D;MinPoints，则将其纳入核心点列表，并将其密度直达的点形成对应的临时聚类簇。</p>
+<h5 id="2、合并临时聚类簇得到聚类簇"><a href="#2、合并临时聚类簇得到聚类簇" class="headerlink" title="2、合并临时聚类簇得到聚类簇"></a><strong>2、合并临时聚类簇得到聚类簇</strong></h5><p>对于每一个临时聚类簇，检查其中的点是否为核心点，如果是，将该点对应的临时聚类簇和当前临时聚类簇合并，得到新的临时聚类簇。</p>
+<p>重复此操作，直到当前临时聚类簇中的每一个点要么不在核心点列表，要么其密度直达的点都已经在该临时聚类簇，该临时聚类簇升级成为聚类簇。</p>
+<p>继续对剩余的临时聚类簇进行相同的合并操作，直到全部临时聚类簇被处理。反复寻找这些核心点直接密度可达或密度可达的点，将其加入到相应的类，对于核心点发生密度可达状况的类，给予合并</p>
+<p>![DFZIMAYBYY](&#x2F;img&#x2F;工程设计文档 (3)&#x2F;Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.001.png)</p>
+<p>DBSCAN算法可以抽象为以下几步：</p>
+<p>1）找到每个样本的邻域内的样本个数，若个数大于等于MinPts，则该样本为核心点；</p>
+<p>2）找到每个核心样本密度直达和密度可达的样本，且该样本亦为核心样本，忽略所有的非核心样本；</p>
+<p>3）若非核心样本在核心样本的邻域内，则非核心样本为边界样本，反之为噪声。</p>
+<p>使用轮廓系数作为判断聚类好坏的依据</p>
+<p><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E8%BD%AE%E5%BB%93%E7%B3%BB%E6%95%B0&spm=1001.2101.3001.7020">轮廓系数</a>（Silhouette Coefficient），是聚类效果好坏的一种评价方式。最早由 Peter J. Rousseeuw 在 1986 提出。它结合内聚度和分离度两种因素。可以用来在相同原始数据的基础上用来评价不同算法、或者算法不同运行方式对聚类结果所产生的影响。</p>
+<p><code>         </code><strong>方法：</strong></p>
+<p><code>                  </code>1，计算样本i到同簇其他样本的平均距离ai。ai 越小，说明样本i越应该被聚类到该簇。将ai 称为样本i的<strong>簇内不相似度</strong>。</p>
+<p><code>                            </code><strong>簇C中所有样本的a i 均值称为簇C的簇不相似度。</strong></p>
+<p><code>                  </code>2，计算样本i到其他某簇Cj 的所有样本的平均距离bij，称为样本i与簇Cj 的不相似度。定义为样本i的<strong>簇间不相似度</strong>：bi &#x3D;min{bi1, bi2, …, bik}</p>
+<p><code>                            </code><strong>bi越大，说明样本i越不属于其他簇。</strong></p>
+<p><code>                   </code>3，根据样本i的簇内不相似度a i 和簇间不相似度b i ，定义样本i的<strong>轮廓系数</strong>：</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.002.png" alt="NNZYMAYA24"></p>
+<p><code>                   </code>4，判断：</p>
+<p><code>                            </code>si接近1，则说明样本i聚类合理；</p>
+<p><code>                            </code>si接近-1，则说明样本i更应该分类到另外的簇；</p>
+<p><code>                            </code>若si 近似为0，则说明样本i在两个簇的边界上。</p>
+<p><code>         </code><strong>所有样本的s i 的均值称为聚类结果的轮廓系数，是该聚类是否合理、有效的度量。</strong></p>
+<h4 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>分别对良性和恶性样本分别进行DBSCAN聚类分析，以下以良性为例说明：</p>
+<p>导入包和类</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import numpy as np </span><br><span class="line">import sklearn.cluster as skc  # 密度聚类</span><br><span class="line">from sklearn import metrics   # 评估模型</span><br></pre></td></tr></table></figure>
+<p>预处理数据</p>
+<p>对良性样本训练</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">label1_df = df[df[&#x27;label&#x27;] == 1]</span><br><span class="line">print(label1_df.shape)</span><br><span class="line"></span><br><span class="line">label1_data = label1_df.drop([&#x27;subjectName&#x27;,&#x27;label&#x27;,&#x27;肿瘤类型&#x27;,&#x27;mark&#x27;,&#x27;QC&#x27;],axis=1)</span><br></pre></td></tr></table></figure>
+<p>主要函数</p>
+<p>重要参数：eps：轮廓半径  min_samples：最小样本量</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#设置半径为2880，最小样本量为19，遍历得轮廓系数最高 0.8164716886625932</span><br><span class="line">db = skc.DBSCAN(eps=1500, min_samples = 15).fit(label1_data) #DBSCAN聚类方法 还有参数，matric = &quot;&quot;距离计算方法</span><br><span class="line">label1_df[&#x27;labels&#x27;] = db.labels_</span><br><span class="line">labels = db.labels_  #和X同一个维度，labels对应索引序号的值 为她所在簇的序号，也就是聚类之后的结果。若簇编号为-1，表示为噪声</span><br></pre></td></tr></table></figure>
+<p>完整代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import numpy as np </span><br><span class="line">import sklearn.cluster as skc  # 密度聚类</span><br><span class="line">from sklearn import metrics   # 评估模型</span><br><span class="line"></span><br><span class="line"># 对良性样本训练</span><br><span class="line">label1_df = df[df[&#x27;label&#x27;] == 1]</span><br><span class="line">print(label1_df.shape)</span><br><span class="line"></span><br><span class="line">label1_data = label1_df.drop([&#x27;subjectName&#x27;,&#x27;label&#x27;,&#x27;肿瘤类型&#x27;,&#x27;mark&#x27;,&#x27;QC&#x27;],axis=1)</span><br><span class="line">#设置半径为2880，最小样本量为19，遍历得轮廓系数最高 0.8164716886625932</span><br><span class="line">db = skc.DBSCAN(eps=1500, min_samples = 15).fit(label1_data) #DBSCAN聚类方法 还有参数，matric = &quot;&quot;距离计算方法</span><br><span class="line">label1_df[&#x27;labels&#x27;] = db.labels_</span><br><span class="line">labels = db.labels_  #和X同一个维度，labels对应索引序号的值 为她所在簇的序号，也就是聚类之后的结果。若簇编号为-1，表示为噪声</span><br><span class="line"></span><br><span class="line">print(&#x27;每个样本的簇标号:&#x27;)</span><br><span class="line">print(labels)</span><br><span class="line">raito = len(labels[labels[:] == -1]) / len(labels)  #计算噪声点个数占总数的比例</span><br><span class="line">print(&#x27;噪声比:&#x27;, format(raito, &#x27;.2%&#x27;))</span><br><span class="line"> </span><br><span class="line">n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)  # 获取分簇的数目</span><br><span class="line"> </span><br><span class="line">print(&#x27;分簇的数目: %d&#x27; % n_clusters_)</span><br><span class="line">print(&quot;轮廓系数: %0.3f&quot; % metrics.silhouette_score(label1_data, labels)) #轮廓系数评价聚类的好坏</span><br><span class="line"> </span><br><span class="line">print(&#x27;噪声的所有样本:&#x27;)</span><br><span class="line">new_cluster = label1_data[labels == -1]</span><br><span class="line">print(new_cluster.shape)</span><br><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line">from sklearn.manifold import TSNE</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">from sklearn import manifold, datasets</span><br><span class="line">new_cluster_1 = label1_data[labels == 0]</span><br><span class="line"># t-SNE的降维与可视化</span><br><span class="line">ts = manifold.TSNE(n_components=2, init=&#x27;pca&#x27;, random_state=0)</span><br><span class="line"># 训练模型</span><br><span class="line">y = ts.fit_transform(new_cluster_1)</span><br><span class="line">x = ts.fit_transform(new_cluster)</span><br><span class="line">plt.scatter(y[:, 0], y[:, 1], cmap=plt.cm.Spectral)</span><br><span class="line">plt.scatter(x[:, 0], x[:, 1], cmap=plt.cm.Spectral)</span><br><span class="line"># 显示图像</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h4 id="结果"><a href="#结果" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>遍历得轮廓系数最高的参数选择后结果</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.003.png" alt="BZ2IMAYAGA"></p>
+<p>聚类结果</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.004.png" alt="E52IMAYAVY"></p>
+<p>实验测试结果如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>逻辑回归</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.50</td>
+<td align="left">0.875</td>
+<td align="left">0.403</td>
+</tr>
+<tr>
+<td align="left">DBSCAN</td>
+<td align="left">0.604</td>
+<td align="left">0.681</td>
+<td align="left">0.546</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>支持向量机</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.409</td>
+<td align="left">0.917</td>
+<td align="left">0.275</td>
+</tr>
+<tr>
+<td align="left">DBSCAN</td>
+<td align="left">0.644</td>
+<td align="left">0.611</td>
+<td align="left">0.615</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>LightGBM</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.8</td>
+<td align="left">0.389</td>
+<td align="left">0.908</td>
+</tr>
+<tr>
+<td align="left">DBSCAN</td>
+<td align="left">0.814</td>
+<td align="left">0.306</td>
+<td align="left">0.901</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>XGBoost</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.794</td>
+<td align="left">0.403</td>
+<td align="left">0.897</td>
+</tr>
+<tr>
+<td align="left">DBSCAN</td>
+<td align="left">0.811</td>
+<td align="left">0.292</td>
+<td align="left">0.901</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>神经网络</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.339</td>
+<td align="left">0.916</td>
+<td align="left">0.187</td>
+</tr>
+<tr>
+<td align="left">DBSCAN</td>
+<td align="left">0.517</td>
+<td align="left">0.736</td>
+<td align="left">0.429</td>
+</tr>
+<tr>
+<td align="left">根据对比发现，DBSCAN使各个模型的准确度都有一定程度的提升，但对灵敏度和特异性的影响有好有坏。</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="置信学习"><a href="#置信学习" class="headerlink" title="置信学习"></a><strong>置信学习</strong></h3><h4 id="思路及原理-1"><a href="#思路及原理-1" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>对噪声数据进行自动过滤，我们尝试采用置信学习（CL）的方法，CL 基于噪声数据剪枝的原理以计数的方式对噪声进行评估，并对数据集进行排序以进行置信训练。</p>
+<p>在 Angluin 和Laird 分类噪声的假设基础上，将 CL 泛化到直接估计噪声标签和无损标签之间的联合分布。</p>
+<p>实现置信学习，首先估计噪声标签和真实标签的联合分布，然后找出并过滤掉错误样本，最后过滤错误样本后，重新训练。</p>
+<p>为获取上述的联合分布，需要使用cheanlab包下的find_label_issues函数，对“每个样本实际属于哪个类别”，“模型预测每个样本在每个类别的概率“，”选择是否是噪声数据的策略”这三个参数设置</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.005.png" alt="53TY2AYA4I"></p>
+<h4 id="实现方法-1"><a href="#实现方法-1" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>导入置信学习的cheanlab</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from cleanlab.classification import CleanLearning</span><br><span class="line">from cleanlab.filter import find_label_issues</span><br></pre></td></tr></table></figure>
+<p>所用到的方法及变量解释</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ordered_label_issues = find_label_issues(</span><br><span class="line">    labels=train_label, # 每个样本实际属于哪个类别</span><br><span class="line">    pred_probs = grid_model.predict_proba(train_data),  # 模型预测每个样本在每个类别的概率</span><br><span class="line">    return_indices_ranked_by=&#x27;self_confidence&#x27;, #选择是否是噪声数据的策略</span><br><span class="line">)</span><br><span class="line">print(ordered_label_issues.shape)</span><br></pre></td></tr></table></figure>
+<p>完整代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from cgi import print_arguments</span><br><span class="line">from cleanlab.classification import CleanLearning</span><br><span class="line">from cleanlab.filter import find_label_issues</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">ordered_label_issues = find_label_issues(</span><br><span class="line">    labels=train_label, # 每个样本实际属于哪个类别</span><br><span class="line">    pred_probs = grid_model.predict_proba(train_data),  # 模型预测每个样本在每个类别的概率</span><br><span class="line">    return_indices_ranked_by=&#x27;self_confidence&#x27;, #选择是否是噪声数据的策略</span><br><span class="line">)</span><br><span class="line">print(ordered_label_issues.shape)</span><br><span class="line"># 将良性和恶性的分开</span><br><span class="line">noise_data11 = noise_data1[noise_data1[&#x27;label&#x27;] == 1]</span><br><span class="line">noise_data10 = noise_data1[noise_data1[&#x27;label&#x27;] == 0]</span><br><span class="line">cleaned_data11 = cleaned_data1[cleaned_data1[&#x27;label&#x27;] == 1]</span><br><span class="line">cleaned_data10 = cleaned_data1[cleaned_data1[&#x27;label&#x27;] == 0]</span><br><span class="line">cleaned_data11.to_csv(&#x27;./可视化/cleaned_data11.csv&#x27;,index = False)</span><br><span class="line">cleaned_data10.to_csv(&#x27;./可视化/cleaned_data10.csv&#x27;,index = False)</span><br></pre></td></tr></table></figure>
+<h4 id="结果-1"><a href="#结果-1" class="headerlink" title="结果"></a><strong>结果</strong></h4><p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.006.png" alt="V3UY2AYAOA"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.007.png" alt="ZTUY2AYBW4"></p>
+<p>总结：以上结果表明比未优化稍微好一点，但相差不大。</p>
+<h3 id="孤立森林"><a href="#孤立森林" class="headerlink" title="孤立森林"></a><strong>孤立森林</strong></h3><h4 id="思路及原理-2"><a href="#思路及原理-2" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>孤立森林根据离群点与正常值较为疏离，容易被孤立的特点，通过建立决策树，将离群点分离出来（异常样本更容易快速落入叶子结点，距离根节点更近）。</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.008.png" alt="HHGH6AYAKQ"></p>
+<p>再利用集成学习bagging的思想，建立多颗决策树，在多棵树上都会被较先分离出来的就是离群点，用异常得分作为判断依据（sklearn中label是1为正常值，-1为异常值）</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.009.png" alt="IXGH6AYAJY"></p>
+<p>实现思路：</p>
+<p>先把两个训练集和一个测试集数据合在一起，通过label标签将良恶性分开，再各自通过离群点检测算法，将离群点筛选出来，完成后放入各模型中测试，并与不做处理的结果进行对比</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.010.png" alt="53GH6AYAHE"></p>
+<h4 id="实现方法-2"><a href="#实现方法-2" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>使用sklearn中的孤立森林模型</p>
+<p>先导入sklearn中的孤立森林包</p>
+<p>from sklearn.ensemble import IsolationForest</p>
+<p>所用到的方法</p>
+<p>sklearn.ensemble.IsolationForest( n_estimators&#x3D;100,  max_samples&#x3D;’auto’,  contamination&#x3D;’auto’,  max_features&#x3D;1.0, bootstrap&#x3D;False,  n_jobs&#x3D;None,  random_state&#x3D;None,  verbose&#x3D;0,  warm_start&#x3D;False )</p>
+<p>参数解释如下：</p>
+<p>n_estimators : iTree的个数，指定该森林中生成的随机树数量，默认为100个max_samples : 构建子树的样本数。如果设置的是”auto”，则max_samples&#x3D;min(256, n_samples)，n_samples即总样本的数量</p>
+<p>contamination :取值范围为(0., 0.5),表示异常数据占给定的数据集的比例</p>
+<p>max_features : 构建每个子树的特征数字</p>
+<p>bootstrap :采样是有放回还是无放回</p>
+<p>random_state :每次训练的随机性</p>
+<p>具体实现代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">from sklearn.ensemble import IsolationForest</span><br><span class="line"></span><br><span class="line"># 将良性和恶性的分开</span><br><span class="line">label1_df = df[df[&#x27;label&#x27;] == 1]</span><br><span class="line">label0_df = df[df[&#x27;label&#x27;] == 0]</span><br><span class="line"># 进行训练</span><br><span class="line">iforest = IsolationForest(n_estimators=100, max_samples=&#x27;auto&#x27;,  </span><br><span class="line">                          contamination=&#x27;auto&#x27;, max_features=10,  </span><br><span class="line">                          bootstrap=False, n_jobs=-1, random_state=1)</span><br><span class="line"># 对恶性的进行孤立森林</span><br><span class="line">train_data = label1_df.drop([&#x27;subjectName&#x27;,&#x27;label&#x27;,&#x27;肿瘤类型&#x27;,&#x27;mark&#x27;,&#x27;QC&#x27;], axis=1)</span><br><span class="line">label1_df[&#x27;anomaly_label&#x27;] = iforest.fit_predict(train_data) </span><br><span class="line">label1_df[&#x27;scores&#x27;] = iforest.decision_function(train_data)</span><br><span class="line">print(label1_df[label1_df.anomaly_label == -1].shape)</span><br><span class="line"># 对良性的进行孤立森林</span><br><span class="line">train_data = label0_df.drop([&#x27;subjectName&#x27;,&#x27;label&#x27;,&#x27;肿瘤类型&#x27;,&#x27;mark&#x27;,&#x27;QC&#x27;], axis=1)</span><br><span class="line">label0_df[&#x27;anomaly_label&#x27;] = iforest.fit_predict(train_data) </span><br><span class="line">label0_df[&#x27;scores&#x27;] = iforest.decision_function(train_data)</span><br><span class="line">print(label0_df[label0_df.anomaly_label == -1].shape)</span><br><span class="line"># 再将恶性和良性的结果拼在一起</span><br><span class="line">df = pd.concat([label1_df,label0_df], axis = 0)</span><br><span class="line"># 删除异常值</span><br><span class="line">df = df[df.anomaly_label == 1]</span><br><span class="line">df = df.drop([&#x27;anomaly_label&#x27;,&#x27;scores&#x27;], axis=1)</span><br><span class="line">print(df.shape)</span><br></pre></td></tr></table></figure>
+<h4 id="结果-2"><a href="#结果-2" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>对异常类型和非异常类型做直方图分布可视化如下</p>
+<p>训练集v1（688），v2（73）+测试集（80），共841个样本</p>
+<p>经过独立森林筛选后，从训练集中筛掉67个样本，从测试集中删掉7个，一共74个（良性22个，恶性52个），剩余样本767个</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.011.png" alt="NDGX6AYA3M"></p>
+<p>实验测试结果如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>逻辑回归</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.625</td>
+<td align="left">0.3</td>
+<td align="left">0.95</td>
+</tr>
+<tr>
+<td align="left">孤立森林</td>
+<td align="left">0.712</td>
+<td align="left">0.675</td>
+<td align="left">0.625</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>支持向量机</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.7625</td>
+<td align="left">0.775</td>
+<td align="left">0.75</td>
+</tr>
+<tr>
+<td align="left">孤立森林</td>
+<td align="left">0.767</td>
+<td align="left">0.675</td>
+<td align="left">0.725</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>LightGBM</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.7125</td>
+<td align="left">0.5</td>
+<td align="left">0.925</td>
+</tr>
+<tr>
+<td align="left">孤立森林</td>
+<td align="left">0.67</td>
+<td align="left">0.425</td>
+<td align="left">0.825</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>XGBoost</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.7</td>
+<td align="left">0.5</td>
+<td align="left">0.9</td>
+</tr>
+<tr>
+<td align="left">孤立森林</td>
+<td align="left">0.725</td>
+<td align="left">0.5</td>
+<td align="left">0.825</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>神经网络</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">未做筛选</td>
+<td align="left">0.6375</td>
+<td align="left">0.3</td>
+<td align="left">0.875</td>
+</tr>
+<tr>
+<td align="left">孤立森林</td>
+<td align="left">0.575</td>
+<td align="left">0.15</td>
+<td align="left">0.9</td>
+</tr>
+</tbody></table>
+<h4 id="结果可视化"><a href="#结果可视化" class="headerlink" title="结果可视化"></a><strong>结果可视化</strong></h4><h5 id="使用matplotlib做可视化"><a href="#使用matplotlib做可视化" class="headerlink" title="使用matplotlib做可视化"></a><strong>使用matplotlib做可视化</strong></h5><p>利用matplotlib对年龄，肿瘤大小，乳房大小，肿瘤类型中的全部值，正常值和异常值分别做良恶性人数可视化。其中年龄和肿瘤大小为数值型数据，使用直方图进行可视化；乳房大小和肿瘤类型为文本型数据，使用条形图做可视化，可视化结果如下</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.012.png" alt="TP4I2AYA34"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.013.png" alt="T74I2AYBDA"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.014.png" alt="UH4I2AYAWQ"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.015.png" alt="V34I2AYAOY"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.016.png" alt="WL4I2AYA34"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.017.png" alt="WX4I2AYAOA"></p>
+<h5 id="使用Excel做可视化"><a href="#使用Excel做可视化" class="headerlink" title="使用Excel做可视化"></a><strong>使用Excel做可视化</strong></h5><p>使用Excel对全部数据，正常值，和异常值的良恶性样本所占比例进行可视化分析，观察在年龄，肿瘤大小，乳房大小上数据的分布特征，对后续优化提供建议。</p>
+<p>如在肿瘤大小中，观察到小于0.6的样本中基本为良性，则在后续模型训练时，可对这一范围内的样本加大良性判定权重。</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.018.png" alt="IX4Y2AYAS4"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.019.png" alt="JH4Y2AYABM"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.020.png" alt="JT4Y2AYAU4"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.021.png" alt="OD4Y2AYAPA"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.022.png" alt="OP4Y2AYA34"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.023.png" alt="O34Y2AYAHA"></p>
+<h2 id="特征筛选"><a href="#特征筛选" class="headerlink" title="特征筛选"></a><strong>特征筛选</strong></h2><h3 id="正负样本"><a href="#正负样本" class="headerlink" title="正负样本"></a><strong>正负样本</strong></h3><h4 id="思路及原理-3"><a href="#思路及原理-3" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>原测试数据集中包含189个正样本（label&#x3D;1）502个负样本，其中测试数据集由train_data_v1.csv组成，正样本数量过低可能使测试中的准确度，灵敏度及特异性降低，故采用过采样与欠采样结合的方式均衡正负样本比例。</p>
+<p><strong>过采样：</strong>重复正比例数据，实际上没有为模型引入更多数据，过分强调正比例数据，会放大正比例噪音对模型的影响。</p>
+<p><strong>欠采样</strong>：丢弃大量数据，和过采样一样会存在过拟合的问题。</p>
+<p>为防止单一使用过采样或欠采样导致样本类型过拟合，计划过采样正样本的两倍，并选择同等数量的负样本使其均衡。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a><strong>实现</strong></h4><p>过采样三倍正样本</p>
+<p>positive_data &#x3D; train_df[train_df[‘label’]&#x3D;&#x3D;1]<br>positive_data_2 &#x3D; positive_data.append(positive_data)</p>
+<p>欠采样与正样本相同数量的负样本</p>
+<p>negative_data &#x3D; train_df[train_df[‘label’]&#x3D;&#x3D;0].sample(n&#x3D;372,random_state&#x3D;1)<br>train_df_better &#x3D; negative_data.append(positive_data_2)</p>
+<p>最终正负样本数：372+372&#x3D;744个</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.024.png" alt="GRGIKAYAYU"></p>
+<h4 id="结果-3"><a href="#结果-3" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>比较准确度，灵敏度及特异性改变情况</p>
+<p>未使用正负样本均衡</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.025.png" alt="HFYIMAYAWA"></p>
+<p>优化后结果</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.026.png" alt="KVYIMAYAJY"></p>
+<p>优化结果分析</p>
+<p>对逻辑回归、树模型和神经网络有一定的优化效果，但对支持向量机模型效果较少，对灵敏度特异性的优化程度较低，波动较大，且可能存在数据本身存在异常的影响。</p>
+<h3 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a><strong>PCA</strong></h3><h4 id="思路及原理-4"><a href="#思路及原理-4" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>所给的数据集（data_v1_allFeatures.csv）中有290个特征，我们尝试在特征筛选阶段，使用PCA降维的方式对数据做降维处理，以加快模型训练速度，尝试提高模型的准确度，灵敏度及特异性。</p>
+<p>PCA即主成分分析，其通过投影的方式将高维的数据映射到低维的空间中，并保证在所投影的维度上，原数据的信息量最大，从而使用较少的数据维度，保留住较多的原始数据特性。</p>
+<p>如下图例子所示，通过变换坐标轴的方式，消除了三个样本点的x2轴（即x2特征），将二维数据降为一维，同时保证了三个样本点的区分度</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.027.png" alt="BTEH6AYB3M"></p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.028.png" alt="DHEH6AYD3M"></p>
+<h4 id="实现方法-3"><a href="#实现方法-3" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>使用sklearn中的PCA模型</p>
+<p>先导入sklearn中的PCA包</p>
+<p>from sklearn.decomposition import PCA</p>
+<p>其函数所需参数为</p>
+<p>sklearn.decomposition.PCA(n_components&#x3D;None, copy&#x3D;True, whiten&#x3D;False)</p>
+<p>n_components: PCA算法中所要保留的主成分个数n，也即保留下来的特征个数n</p>
+<p>copy:表示是否在运行算法时，将原始训练数据复制一份</p>
+<p>whiten：白化，使得每个特征具有相同的方差</p>
+<p>使用到的方法有</p>
+<p>fit(X,y&#x3D;None)  # 表示用数据X来训练PCA模型。因为PCA是无监督学习算法，此处y自然等于None。<br>fit_transform(X) # 用X来训练PCA模型，同时返回降维后的数据￥<br>inverse_transform() # 将降维后的数据转换成原始数据<br>transform(X) # 将数据X转换成降维后的数据。当模型训练好后，对于新输入的数据，都可以用transform方法来降维。</p>
+<p>实现代码如下：</p>
+<p>读入数据集后，先取出label，mark两列保存下来，再将数据集中用不到的5列删除</p>
+<p>取主成分个数为80进行模型训练，将训练结果与先前存下来的label，mark两列保存到文件（selectFeatureDataTopPCA.csv）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from sklearn.decomposition import PCA</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import numpy as np</span><br><span class="line">import pandas as pd</span><br><span class="line">#导入数据</span><br><span class="line">df5 = pd.read_csv(&#x27;./data/data_v1_allFeatures.csv&#x27;,encoding = &#x27;utf-8&#x27;)</span><br><span class="line">df5_label = df5[&#x27;label&#x27;]</span><br><span class="line">df5_mark = df5[&#x27;mark&#x27;]</span><br><span class="line">data5 = df5.drop([&#x27;subjectName&#x27;,&#x27;label&#x27;,&#x27;肿瘤类型&#x27;,&#x27;mark&#x27;,&#x27;QC&#x27;],axis=1)</span><br><span class="line">print(data5.shape)</span><br><span class="line"></span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">pca_line = PCA().fit(data5)</span><br><span class="line">pca_line.explained_variance_ratio_</span><br><span class="line">plt.figure(figsize=[200,5])</span><br><span class="line">plt.xticks(np.linspace(0,290,290,endpoint=True))</span><br><span class="line">plt.plot(np.cumsum(pca_line.explained_variance_ratio_))</span><br><span class="line">plt.xlabel(&quot;number of components after dimension reduction&quot;)</span><br><span class="line">plt.ylabel(&quot;cumulative explained variance ratio&quot;)</span><br><span class="line">plt.show()</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line"></span><br><span class="line">newdf = PCA(n_components=80).fit_transform(data5)</span><br><span class="line">newdf = pd.DataFrame(newdf)</span><br><span class="line">newdf[&#x27;label&#x27;] = df5_label</span><br><span class="line">newdf[&#x27;mark&#x27;] = df5_mark</span><br><span class="line">print(newdf.shape)</span><br><span class="line">newdf.to_csv(&#x27;./selectFeatureDataTopPCA.csv&#x27;,index = False)</span><br></pre></td></tr></table></figure>
+<h4 id="结果-4"><a href="#结果-4" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>在PCA中，信息用方差来表示</p>
+<p>explained_variance：降维后的方差</p>
+<p>通过绘制图像来观察，在不同保留维度下，降维后所有成分的方差和</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.029.png" alt="4HEX6AYASM"></p>
+<p>以下为n不同取值时训练模型所得出的结果</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>逻辑回归</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">树模型</td>
+<td align="left">0.7375</td>
+<td align="left">0.775</td>
+<td align="left">0.7</td>
+</tr>
+<tr>
+<td align="left">PCA（3）</td>
+<td align="left">0.58</td>
+<td align="left">0.175</td>
+<td align="left">1.0</td>
+</tr>
+<tr>
+<td align="left">PCA（50）</td>
+<td align="left">0.675</td>
+<td align="left">0.5</td>
+<td align="left">0.85</td>
+</tr>
+<tr>
+<td align="left">PCA（80）</td>
+<td align="left">0.75</td>
+<td align="left">0.625</td>
+<td align="left">0.875</td>
+</tr>
+<tr>
+<td align="left">PCA（100）</td>
+<td align="left">0.675</td>
+<td align="left">0.575</td>
+<td align="left">0.775</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>支持向量机</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">树模型</td>
+<td align="left">0.6625</td>
+<td align="left">0.7</td>
+<td align="left">0.625</td>
+</tr>
+<tr>
+<td align="left">PCA（3）</td>
+<td align="left">0.575</td>
+<td align="left">0.175</td>
+<td align="left">0.975</td>
+</tr>
+<tr>
+<td align="left">PCA（50）</td>
+<td align="left">0.55</td>
+<td align="left">0.175</td>
+<td align="left">0.925</td>
+</tr>
+<tr>
+<td align="left">PCA（80）</td>
+<td align="left">0.55</td>
+<td align="left">0.175</td>
+<td align="left">0.925</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>LightGBM</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">树模型</td>
+<td align="left">0.625</td>
+<td align="left">0.325</td>
+<td align="left">0.925</td>
+</tr>
+<tr>
+<td align="left">PCA（3）</td>
+<td align="left">0.5625</td>
+<td align="left">0.175</td>
+<td align="left">0.95</td>
+</tr>
+<tr>
+<td align="left">PCA（50）</td>
+<td align="left">0.5625</td>
+<td align="left">0.175</td>
+<td align="left">0.95</td>
+</tr>
+<tr>
+<td align="left">PCA（80）</td>
+<td align="left">0.5625</td>
+<td align="left">0.175</td>
+<td align="left">0.95</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>XGBoost</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">树模型</td>
+<td align="left">0.6</td>
+<td align="left">0.3</td>
+<td align="left">0.9</td>
+</tr>
+<tr>
+<td align="left">PCA（3）</td>
+<td align="left">0.6</td>
+<td align="left">0.3</td>
+<td align="left">0.9</td>
+</tr>
+<tr>
+<td align="left">PCA（50）</td>
+<td align="left">0.6</td>
+<td align="left">0.3</td>
+<td align="left">0.9</td>
+</tr>
+<tr>
+<td align="left">PCA（80）</td>
+<td align="left">0.6</td>
+<td align="left">0.3</td>
+<td align="left">0.9</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>神经网络</strong></th>
+<th align="left"><strong>准确性</strong></th>
+<th align="left"><strong>灵敏度</strong></th>
+<th align="left"><strong>特异性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">树模型</td>
+<td align="left">0.5125</td>
+<td align="left">0.075</td>
+<td align="left">0.95</td>
+</tr>
+<tr>
+<td align="left">PCA（3）</td>
+<td align="left">0.5625</td>
+<td align="left">0.225</td>
+<td align="left">0.9</td>
+</tr>
+<tr>
+<td align="left">PCA（50）</td>
+<td align="left">0.6875</td>
+<td align="left">0.4</td>
+<td align="left">0.975</td>
+</tr>
+<tr>
+<td align="left">PCA（80）</td>
+<td align="left">0.6</td>
+<td align="left">0.4</td>
+<td align="left">0.8</td>
+</tr>
+<tr>
+<td align="left">总结：PCA降维方法在该样本集中的效果并不明显</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="方差过滤"><a href="#方差过滤" class="headerlink" title="方差过滤"></a><strong>方差过滤</strong></h3><h4 id="思路及原理-5"><a href="#思路及原理-5" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>如果样本在这个特征上基本没有差异，从数学角度上看，就代表一个特征本身的方差很小。这就为我们所做的工作提供了一个思路————方差过滤</p>
+<p>实现方差过滤，利用sklearn中的方差过滤模型。这是通过特征本身的方差来筛选特征的类。该类有着重要参数threshold，表示方差的阈值，舍弃所有方差小于threshold的特征，如果不填，则阈值默认设置为0，即删除所有的记录都相同的特征。但是初始295个经过阈值默认为0下的筛选依然剩下了290个特征，因此可以看出阈值的选择是值得需要探讨的地方。</p>
+<p>最终，在阈值选择方面打算留下一半的特征，即设定一个让特征总数减半的方差阈值，只要找到特征方差的中位数，再将这个中位数作为参数threshold的值输入。</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.030.png" alt="DPWI2AYADA"></p>
+<h4 id="实现方法-4"><a href="#实现方法-4" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>导入sklearn中<strong>VarianceThreshold</strong></p>
+<p>from sklearn.feature_selection import VarianceThreshold</p>
+<p>其函数所需参数为：</p>
+<p>VarianceThreshold(threshold) #参数threshold，表示方差的阈值</p>
+<p>方差阈值的设置：</p>
+<p>np.median(train_data.var().values)#筛选一半的特征，采用中位数做阈值</p>
+<p>实现代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line">from sklearn.feature_selection import VarianceThreshold  # 方差过滤</span><br><span class="line">#selector = VarianceThreshold()</span><br><span class="line">selector = VarianceThreshold(np.median(train_data.var().values))#筛选一半的特征，采用中位数做阈值</span><br><span class="line">x_train1 = selector.fit_transform(train_data)  # 方差过滤</span><br><span class="line">x_test1 = selector.transform(test_data)  </span><br><span class="line">print(x_train1.shape)</span><br><span class="line">print(x_test1.shape)</span><br><span class="line"></span><br><span class="line"># 保留特征名称</span><br><span class="line">import turtle</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">all_name = train_data.columns.values.tolist()  # 获得所有的特征名称</span><br><span class="line">select_name_index0 = selector.get_support(indices=True)  # 留下特征的索引值，list格式</span><br><span class="line">select_name0 = []</span><br><span class="line">for i in select_name_index0:</span><br><span class="line">    select_name0.append(all_name[i])</span><br><span class="line">print(select_name0)</span><br><span class="line">select_name0=pd.to_numeric(select_name0,errors=&#x27;coerce&#x27;)</span><br><span class="line">select_name0 = pd.DataFrame(select_name0)</span><br><span class="line">print(select_name0.dtypes)</span><br><span class="line">#x_test1=pd.DataFrame(x_test1)</span><br><span class="line">#x_test1=pd.concat([x_test1,select_name0],axis=0)</span><br><span class="line">df5 = np.vstack((x_test1,x_train1))</span><br><span class="line">df5 = pd.DataFrame(df5)</span><br><span class="line">df5[&#x27;label&#x27;]=df_label</span><br><span class="line">df5[&#x27;mark&#x27;]=df_mark</span><br><span class="line">print(df5.shape)</span><br><span class="line">df5.to_csv(&#x27;./test.csv&#x27;,index = False)</span><br></pre></td></tr></table></figure>
+<h4 id="结果-5"><a href="#结果-5" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>选择筛取一半的特征训练模型所得出的结果</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.031.png" alt="BHXY2AYAIY"></p>
+<p>总结：不断调整阈值，观察阈值改变在此模型的表现，结果表现时好时坏，以左图阈值选择为一半为例，方差筛选可能会导致部分有效特征被筛选掉。因此如何去更好的利用这一算法，我们认为，可以在特征筛选上，先使用方差筛选，阈值设置为较小的值或者0，优先筛选掉明显用不上的特征，接着继续选择更优的特征选择方法，继续削减特征数量。</p>
+<h3 id="树模型筛选"><a href="#树模型筛选" class="headerlink" title="树模型筛选"></a><strong>树模型筛选</strong></h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a><strong>思路</strong></h4><p>使用三种树模型，XGBoost，Extra-Tree和RandomForest来评估数据集中特征的重要性，分别求出三种模型中，各自认为重要性最高的100个特征值，然后再求交集，选出三种模型均认为较为重要的特征</p>
+<h4 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a><strong>具体实现</strong></h4><p>调用sklearn中的feature_importance对特征的重要性进行评估，一般来说，重要性提供了一个评分，它表明每个特性在模型中增强决策树的构建中有多有用或多有价值。属性用于使用决策树做出关键决策的次数越多，其相对重要性就越高。</p>
+<p>传入XGBoost模型所得结果如下</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.032.png" alt="QCY4SAYAFE"></p>
+<p>传入Extra-Tree模型所得结果如下</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.033.png" alt="UOY4SAYAEU"></p>
+<p>传入RandomForest模型所得结果如下</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.034.png" alt="YCY4SAYA2Y"></p>
+<h4 id="结果-6"><a href="#结果-6" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>对三种模型所求出的前一百个重要特征求交集，最终选出95个重要特征，完成筛选</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 将不同筛选模型得到的前100个特征求交集</span><br><span class="line">feat_imp_xgb = feat_imp_xgb_100.index.values</span><br><span class="line">feat_imp_rfc = feat_imp_rfc_100.index.values</span><br><span class="line">feat_imp_Extra = feat_imp_Extra_100.index.values</span><br><span class="line"></span><br><span class="line">feat_imp_all = list(feat_imp_xgb) + list(feat_imp_rfc) + list(feat_imp_Extra)</span><br><span class="line"># 通过字典统计每个元素出现个数</span><br><span class="line">feat_dic = &#123;&#125;</span><br><span class="line">keys = []</span><br><span class="line">for feat in feat_imp_all:</span><br><span class="line">    if feat not in feat_dic.keys():</span><br><span class="line">        feat_dic[feat] = feat_imp_all.count(feat) # 如果列表里面的元素不在字典key值中，那么创建一个新的key并统计元素出现的次数</span><br><span class="line"># 如果出现的次数大于等于2，则说明该特征比较重要</span><br><span class="line"></span><br><span class="line">for key,value in feat_dic.items():</span><br><span class="line">    if value &gt;= 2:</span><br><span class="line">        keys.append(key)</span><br><span class="line">print(len(keys))</span><br></pre></td></tr></table></figure>
+<h2 id="参数调整"><a href="#参数调整" class="headerlink" title="参数调整"></a><strong>参数调整</strong></h2><p>使用网格搜索的方式进行参数调整。</p>
+<h3 id="逻辑回归-交叉验证"><a href="#逻辑回归-交叉验证" class="headerlink" title="逻辑回归+交叉验证"></a><strong>逻辑回归+交叉验证</strong></h3><h4 id="参数含义"><a href="#参数含义" class="headerlink" title="参数含义"></a><strong>参数含义</strong></h4><ul>
+<li>cv：交叉验证折数，默认None代表3</li>
+<li>penalty：采用何种正则化，默认”l2”，可选”l1”，但注意使用”newton-cg”、”sag”和”lbfgs”这三种优化算法时仅支持”l2”。</li>
+<li>scoring：评分函数，默认使用”accuracy”准确度，详见<a target="_blank" rel="noopener" href="https://ster.im/py_sklearn_2/">《SKlearn模型评估》</a>。</li>
+<li>solver：优化算法，可选”newton-cg”、”lbfgs”（默认）、”liblinear”、”sag”、”saga”。对于小数据集可选”liblinear”，巨型数据集选择随机梯度下降”sag”或”saga”更快；此外，进行多分类任务尽量不选择”liblinear”，因为其只能采用一对多的分类方式。</li>
+<li>max_iter：优化算法的最大迭代次数。</li>
+<li>class_weight：类别权重，默认视所有类别具有相同的权重，可选”balanced”自动按照类别频率分配权重，也可指定一个字典。</li>
+<li>multi_class：多分类时的分类策略，可选”ovr”（默认）、”multinomial”、”auto”。”ovr”即一对多，迭代快、准确性不如多对多；”multinomial”为多对多，迭代慢、准确度高。当优化算法使用”liblinear”时无法使用”multinomial”。</li>
+<li>random_state：随机数种子。</li>
+</ul>
+<h4 id="网格搜索"><a href="#网格搜索" class="headerlink" title="网格搜索"></a><strong>网格搜索</strong></h4><ul>
+<li>scoring&#x3D;None：模型评价标准，默认None。</li>
+<li><code> </code>n_jobs&#x3D;1 进程个数，默认为1。 若值为 -1，则用所有的CPU进行运算。 若值为1，则不进行并行运算，这样的话方便调试。</li>
+<li>refit&#x3D;True：默认为True,程序将会以交叉验证训练集得到的最佳参数，重新对所有可用的训练集与开发集进行，作为最终用于性能评估的最佳模型参数。即在搜索参数结束后，用最佳参数结果再次fit一遍全部数据集。</li>
+<li><code> </code>cv&#x3D;None：交叉验证参数，默认None，使用三折交叉验证。</li>
+<li>pre_dispatch&#x3D;‘2*n_jobs’：指定总共分发的并行任务数。当n_jobs大于1时，数据将在每个运行点进行复制，这可能导致OOM，而设置pre_dispatch参数，则可以预先划分总共的job数量，使数据最多被复制pre_dispatch次</li>
+</ul>
+<h4 id="优化细节"><a href="#优化细节" class="headerlink" title="优化细节"></a><strong>优化细节</strong></h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">model = LogisticRegression()</span><br><span class="line">C = np.logspace(-1, 5, 100) #增加c从40到100</span><br><span class="line">class_weight= [&quot;balanced&quot;, None] </span><br><span class="line">solver = [&quot;lbfgs&quot;, &quot;liblinear&quot;, &quot;sag&quot;, &quot;saga&quot;,&quot;newton-cg&quot;]# 增加newton-cg&quot;优化算法选项</span><br><span class="line">multi_class = [&quot;multinomial&quot;,&quot;ovr&quot;,&quot;auto&quot;] #增加分类策略选择</span><br><span class="line"></span><br><span class="line">param_grid = [&#123;&quot;penalty&quot; : [&quot;l2&quot;],</span><br><span class="line">              &quot;C&quot; : C,</span><br><span class="line">              &quot;multi_class&quot; : multi_class ,</span><br><span class="line">              &quot;class_weight&quot;: class_weight,</span><br><span class="line">              &quot;solver&quot;: solver&#125;]</span><br><span class="line"></span><br><span class="line">grid_model = GridSearchCV(estimator=model,</span><br><span class="line">                          param_grid=param_grid,</span><br><span class="line">                          cv=7,# 调整至七折交叉验证</span><br><span class="line">                          scoring = &quot;f1&quot;,</span><br><span class="line">                          refit=True , #重新验证最佳参数</span><br><span class="line">                          pre_dispatch= 10, # 减少搜索时间</span><br><span class="line">                          n_jobs = -1)</span><br><span class="line"></span><br><span class="line">grid_model.fit(train_data, train_label)</span><br></pre></td></tr></table></figure>
+<h4 id="优化结果"><a href="#优化结果" class="headerlink" title="优化结果"></a><strong>优化结果</strong></h4><table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">最优模型分数</th>
+<th align="left">准确度</th>
+<th align="left">灵敏度</th>
+<th align="left">特异性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">优化前</td>
+<td align="left">0.494421</td>
+<td align="left">0.625</td>
+<td align="left">0.425</td>
+<td align="left">0.825</td>
+</tr>
+<tr>
+<td align="left">优化后</td>
+<td align="left">0.513697</td>
+<td align="left">0.7375</td>
+<td align="left">0.725</td>
+<td align="left">0.75</td>
+</tr>
+</tbody></table>
+<h3 id="支持向量机模型"><a href="#支持向量机模型" class="headerlink" title="支持向量机模型"></a><strong>支持向量机模型</strong></h3><h4 id="参数含义-1"><a href="#参数含义-1" class="headerlink" title="参数含义"></a><strong>参数含义</strong></h4><ul>
+<li>C：惩罚系数C，默认值为1.0。</li>
+<li>kernel：核函数，默认使用”rbf”径向基函数，可选”linear”、”poly”、”sigmoid”、”precomputed”或者一个可调用的函数。</li>
+<li>degree：多项式核函数的维度d，仅在核函数选择”poly”时有效。默认值为3。</li>
+<li>gamma：”rbf”、”poly”、”sigmoid”的系数gamma，默认为”auto”，取特征数量的倒数，如果使用”scale”，则取特征数量乘以变量二阶矩再取倒数。</li>
+<li>coef0：核函数中的独立项，仅在核函数选择”poly”、”sigmoid”时有效。默认值为0.0。</li>
+<li>shrinking：是否使用shrinking heuristic方法，默认为True。</li>
+<li>probability：是否使用概率估计，默认为False。</li>
+<li>tol：停止训练的误差精度，默认值为1e-3。</li>
+<li>cache_size：核函数缓存大小。</li>
+<li>class_weight：接收字典或字典的列表来指定各类别的的权重，也可指定为”balanced”，使用类别出现频率的倒数作为权重。使用默认的None将视所有类别具有相同的权重。</li>
+<li>max_iter：最大迭代次数，默认为-1即无限制。</li>
+<li>decision_function_shape：多分类策略，可选”ovo”或”ovr”（默认）。</li>
+<li>random_state：随机数种子。</li>
+</ul>
+<h4 id="优化细节-1"><a href="#优化细节-1" class="headerlink" title="优化细节"></a><strong>优化细节</strong></h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">params = [</span><br><span class="line">&#123;&#x27;kernel&#x27;:[&#x27;linear&#x27;],&#x27;C&#x27;:[0.1,0.5,1,10,100]&#125;,</span><br><span class="line">&#123;&#x27;kernel&#x27;:[&#x27;sigmoid&#x27;],&#x27;C&#x27;:[1,2,3,4,5,10],&#x27;gamma&#x27;:[1,0.1, 0.01, 0.001],&#x27;coef0&#x27;:[0.01,1,10,100],&#125;,#增加双曲正切函数tanh核函数</span><br><span class="line">&#123;&#x27;kernel&#x27;:[&#x27;poly&#x27;],&#x27;C&#x27;:[1,2,3,4,5,10],&#x27;degree&#x27;:[2,3,4,5],&#x27;coef0&#x27;:[0.01,1,10,100],&#125;,#增加coef0控制核函数中的独立项</span><br><span class="line">&#123;&#x27;kernel&#x27;:[&#x27;rbf&#x27;],&#x27;C&#x27;:[0.1,0.5,1,10,100], &#x27;gamma&#x27;:[1,0.1, 0.01, 0.001]&#125;,</span><br><span class="line">&#123;&#x27;class_weight&#x27;:[&#x27;balanced&#x27;,None]&#125;]</span><br><span class="line"></span><br><span class="line">model = svm.SVC(probability=True,shrinking = True)#进行启发式训练</span><br><span class="line"></span><br><span class="line">model = GridSearchCV(estimator=model, </span><br><span class="line">                     param_grid=params, </span><br><span class="line">                     cv=8, #调整至八折交叉验证</span><br><span class="line">                     scoring = &#x27;f1&#x27;, </span><br><span class="line">                     refit=True , #重新验证最佳参数</span><br><span class="line">                     pre_dispatch= 10, # 减少搜索时间</span><br><span class="line">                     n_jobs = -1)</span><br><span class="line">model.fit(train_data, train_label)</span><br></pre></td></tr></table></figure>
+<h4 id="优化结果-1"><a href="#优化结果-1" class="headerlink" title="优化结果"></a><strong>优化结果</strong></h4><p>ps：时间消耗大幅度提升</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">最优模型分数</th>
+<th align="left">准确度</th>
+<th align="left">灵敏度</th>
+<th align="left">特异性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">优化前</td>
+<td align="left">0.511085</td>
+<td align="left">0.725</td>
+<td align="left">0.65</td>
+<td align="left">0.8</td>
+</tr>
+<tr>
+<td align="left">优化后</td>
+<td align="left">0.524251</td>
+<td align="left">0.725</td>
+<td align="left">0.65</td>
+<td align="left">0.8</td>
+</tr>
+</tbody></table>
+<h3 id="树模型"><a href="#树模型" class="headerlink" title="树模型"></a><strong>树模型</strong></h3><h4 id="XGBoost"><a href="#XGBoost" class="headerlink" title="XGBoost"></a><strong>XGBoost</strong></h4><p>集成算法通过在数据上构建多个弱评估器，汇总所有弱评估器的建模结果，以获取比单个模型更好的回归或分类表现。弱评估器被定义为是表现至少比随机猜测更好的模型，即预测准确率不低于50%的任意模型</p>
+<p>方法一采用sklearn中的API与其他机器学习模型一样进行fit和predict的流程来运行XGBoost</p>
+<p>方法二采用xgboost原生接口，采用train和predict，方便调参</p>
+<p><img src="/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.035.png" alt="3PA4SAYA4Q"></p>
+<p>max_depth：基学习器的深度，增加该值会使基学习器变得更加复杂，荣易过拟合，设为0表示不设限制，对于<strong>depth-wise</strong>的基学习器学习方法需要控制深度</p>
+<p>min_child_weight：子节点所需的样本权重和(hessian)的最小阈值，若是基学习器切分后得到的叶节点中样本权重和低于该阈值则不会进一步切分，在线性模型中该值就对应每个节点的最小样本数，该值越大模型的学习约保守，同样用于防止模型过拟合</p>
+<p>gamma：叶节点进一步切分的最小损失下降的阈值(超过该值才进一步切分)，越大则模型学习越保守，用来控制基学习器的复杂度</p>
+<p>XGBoost</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">XGBoost</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">from sklearn.metrics import accuracy_score</span><br><span class="line">from sklearn.metrics import confusion_matrix</span><br><span class="line">import xgboost as xgb</span><br><span class="line">from xgboost import plot_importance</span><br><span class="line">from sklearn.metrics import roc_auc_score,f1_score</span><br><span class="line">from sklearn.model_selection import StratifiedKFold</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 加载数据</span><br><span class="line">df = pd.read_csv(&#x27;./selectFeatureDataTopRfc100.csv&#x27;)</span><br><span class="line">train_df = df[df[&#x27;mark&#x27;]==&#x27;train&#x27;]</span><br><span class="line">test_df = df[df[&#x27;mark&#x27;]==&#x27;test&#x27;]</span><br><span class="line"></span><br><span class="line">train_label = train_df[&#x27;label&#x27;]</span><br><span class="line">train_data=train_df.drop([&#x27;mark&#x27;,&#x27;label&#x27;],axis=1)</span><br><span class="line"></span><br><span class="line">test_label = test_df[&#x27;label&#x27;]</span><br><span class="line">test_data=test_df.drop([&#x27;mark&#x27;,&#x27;label&#x27;],axis=1)</span><br><span class="line"></span><br><span class="line"># 分层k折交叉检验</span><br><span class="line">skf = StratifiedKFold(n_splits=5)  </span><br><span class="line">result_xgb = []</span><br><span class="line">fold = 1</span><br><span class="line">for train_idx, val_idx in skf.split(train_data, train_label):</span><br><span class="line">    train_x = train_data.loc[train_idx]</span><br><span class="line">    train_y = train_label.loc[train_idx]</span><br><span class="line">    val_x = train_data.loc[val_idx]</span><br><span class="line">    val_y = train_label.loc[val_idx]</span><br><span class="line">    d_train = xgb.DMatrix(train_x, train_y)</span><br><span class="line">    d_val = xgb.DMatrix(val_x, val_y)</span><br><span class="line">    d_test = xgb.DMatrix(test_data)</span><br><span class="line"></span><br><span class="line">    params = &#123;</span><br><span class="line">        &#x27;max_depth&#x27;:5,</span><br><span class="line">        &#x27;min_child_weight&#x27;:1,</span><br><span class="line">        &#x27;num_class&#x27;:2,</span><br><span class="line">        &#x27;eta&#x27;: 0.1,  #学习率</span><br><span class="line">        &#x27;gamma&#x27;: 0.1, #后剪枝参数，取值在[0, 1]，越大越保守</span><br><span class="line">        &#x27;seed&#x27;: 1234,</span><br><span class="line">        &#x27;alpha&#x27;: 1,  #L1正则项的惩罚系数</span><br><span class="line">        &#x27;eval_metric&#x27;: &#x27;auc&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    num_round = 500</span><br><span class="line"></span><br><span class="line">    # # 方式一：采用sklearn接口，采用fit 和 predict</span><br><span class="line">    # model_xgb = xgb.XGBClassifier()</span><br><span class="line">    # model_xgb.fit(train_x, train_y, verbose=False) </span><br><span class="line">    # pred_train = model_xgb.predict(train_x)</span><br><span class="line">    # pred_val = model_xgb.predict(val_x)</span><br><span class="line">    # pred_xgb = model_xgb.predict(X_test)</span><br><span class="line"></span><br><span class="line">    # 方式二：采用xgboost原生接口，采用train和predict，方便调参</span><br><span class="line">    model_xgb = xgb.train(params, d_train, num_round)</span><br><span class="line">    pred_train = model_xgb.predict(d_train)</span><br><span class="line">    pred_val = model_xgb.predict(d_val)</span><br><span class="line">    pred_xgb = model_xgb.predict(d_test)</span><br><span class="line"></span><br><span class="line">    auc_train = roc_auc_score(train_y, pred_train)</span><br><span class="line">    auc_val = roc_auc_score(val_y, pred_val)</span><br><span class="line">    f_score_train = f1_score(train_y, pred_train)</span><br><span class="line">    f_score_val = f1_score(val_y, pred_val)</span><br><span class="line">    print(&#x27;Fold: %d, AUC_train: %.4f, AUC_val: %.4f, F1-score_train: %.4f, F1-score_val: %.4f&#x27;%(fold, </span><br><span class="line">        auc_train, auc_val, f_score_train, f_score_val))</span><br><span class="line"></span><br><span class="line">    result_xgb.append(pred_xgb)</span><br><span class="line"></span><br><span class="line">    fold += 1</span><br><span class="line"></span><br><span class="line">result_xgb = pd.DataFrame(result_xgb).T</span><br><span class="line">print(&#x27;result_xgb.shape = &#x27;, result_xgb.shape)</span><br><span class="line"></span><br><span class="line"># 将5次预测结果求平均值</span><br><span class="line">result_xgb[&#x27;average&#x27;] = result_xgb.mean(axis=1)</span><br><span class="line"></span><br><span class="line"># 最终预测结果</span><br><span class="line">result_xgb[&#x27;xgb_predict&#x27;] = result_xgb[&#x27;average&#x27;].apply(lambda x:1 if x&gt;0.5 else 0)</span><br><span class="line"># 特征重要性</span><br><span class="line">plt.figure(figsize=(40, 30))</span><br><span class="line">plot_importance(model_xgb)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"># 导出结果</span><br><span class="line"># result = pd.read_csv(&#x27;./data/testSubjectName.csv&#x27;)</span><br><span class="line"># result[&#x27;xgb_predict&#x27;] = result_xgb[&#x27;xgb_predict&#x27;]</span><br><span class="line"># result.to_csv(&#x27;./data/testSubjectName.csv&#x27;,index=False)</span><br></pre></td></tr></table></figure>
+<h4 id="LightGBM"><a href="#LightGBM" class="headerlink" title="LightGBM"></a><strong>LightGBM</strong></h4><p>LightGBM（Light Gradient Boosting Machine）是一个实现GBDT算法的框架，支持高效率的并行训练，并且具有更快的训练速度、更低的内存消耗、更好的准确率、支持分布式可以快速处理海量数据等优点。</p>
+<p>learning_rate: 学习率。默认设置为0.1，一般设置在0.05-0.1之间。选择比较小的学习率能获得稳定较好的模型性能。</p>
+<p>max_depth: 树模型的最大深度。防止过拟合的最重要的参数，一般限制为3~5之间。是需要调整的核心参数，对模型性能和泛化能力有决定性作用。</p>
+<p>num_leaves: 一棵树上的叶子节点个数。默认设置为31，和max_depth配合来空值树的形状，一般设置为(0, 2^max_depth - 1]的一个数值。是一个需要重点调节的参数，对模型性能影响很大。</p>
+<p>min_child_sample: 一个叶子上的最小数据量。默认设置为20。根据数据量来确定，当数据量比较大时，应该提升这个数值，让叶子节点的数据分布相对稳定，提高模型的泛化能力。</p>
+<p>Lightgbm</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">Lightgbm</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">import lightgbm</span><br><span class="line">import pandas as pd</span><br><span class="line">from sklearn.metrics import accuracy_score</span><br><span class="line">from sklearn.metrics import confusion_matrix</span><br><span class="line">from sklearn.model_selection import KFold</span><br><span class="line"></span><br><span class="line"># 加载数据集</span><br><span class="line">df = pd.read_csv(&#x27;./selectFeatureDataTopRfc100.csv&#x27;)</span><br><span class="line">train_df = df[df[&#x27;mark&#x27;]==&#x27;train&#x27;]</span><br><span class="line">test_df = df[df[&#x27;mark&#x27;]==&#x27;test&#x27;]</span><br><span class="line"></span><br><span class="line">train_label = train_df[&#x27;label&#x27;]</span><br><span class="line">train_data=train_df.drop([&#x27;mark&#x27;,&#x27;label&#x27;],axis=1)</span><br><span class="line"></span><br><span class="line">test_label = test_df[&#x27;label&#x27;]</span><br><span class="line">test_data=test_df.drop([&#x27;mark&#x27;,&#x27;label&#x27;],axis=1)</span><br><span class="line"></span><br><span class="line">def select_by_lgb(train_data,train_label,test_data,random_state=2022,n_splits=5,metric=&#x27;auc&#x27;,num_round=10000,early_stopping_rounds=100):</span><br><span class="line">    kfold = KFold(n_splits=n_splits, shuffle=True, random_state=random_state)</span><br><span class="line">    fold=0</span><br><span class="line">    result=[]</span><br><span class="line">    for train_idx, val_idx in kfold.split(train_data):</span><br><span class="line">        random_state+=1</span><br><span class="line">        train_x = train_data.loc[train_idx]</span><br><span class="line">        train_y = train_label.loc[train_idx]</span><br><span class="line">        test_x = train_data.loc[val_idx]</span><br><span class="line">        test_y = train_label.loc[val_idx]</span><br><span class="line">        clf=lightgbm</span><br><span class="line">        train_matrix=clf.Dataset(train_x,label=train_y)</span><br><span class="line">        test_matrix=clf.Dataset(test_x,label=test_y)</span><br><span class="line">        </span><br><span class="line">        params=&#123;</span><br><span class="line">                &#x27;boosting_type&#x27;: &#x27;gbdt&#x27;,</span><br><span class="line">                &#x27;objective&#x27;: &#x27;binary&#x27;,</span><br><span class="line">                &#x27;learning_rate&#x27;: 0.1,</span><br><span class="line">                &#x27;max_depth&#x27;: 5,</span><br><span class="line">                &#x27;num_leaves&#x27;: 7,</span><br><span class="line">                &#x27;min_child_sample&#x27;:20,</span><br><span class="line">                &#x27;is_unbalace&#x27;:True,</span><br><span class="line">                &#x27;metric&#x27;: metric,</span><br><span class="line">                &#x27;seed&#x27;: random_state,</span><br><span class="line">                &#x27;silent&#x27;: True,</span><br><span class="line">                &#x27;nthread&#x27;:-1 &#125;</span><br><span class="line"></span><br><span class="line">        model=clf.train(params,train_matrix,num_round,valid_sets=test_matrix,early_stopping_rounds=early_stopping_rounds)</span><br><span class="line">        pre_y=model.predict(test_data)</span><br><span class="line">        result.append(pre_y)</span><br><span class="line">        fold+=1</span><br><span class="line">    return result</span><br><span class="line"></span><br><span class="line">test_results=select_by_lgb(train_data,train_label,test_data)</span><br></pre></td></tr></table></figure>
+<h3 id="sklearn-神经网络"><a href="#sklearn-神经网络" class="headerlink" title="sklearn 神经网络"></a><strong>sklearn 神经网络</strong></h3><h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a><strong>思路</strong></h4><p><strong>K折交叉验证</strong></p>
+<p>因为交叉验证交叉验证的作用主要有两个：模型选择和模型评估。所以使用sklearn.model_selection包，构建交叉验证模型(包中的KFold），将数据分成n份，将1份从数据集中抽出来，作为测试集，用剩下的n-1份建模，使用MLPClassifier模型预测抽取出来的一份，将前面抽取的1份放回，再抽取另1份作为测试集，再进行一次建模预测，循环直到每一份都作为了一次测试集为止，每个样本都被预测了一次且仅一次，计算每个样本的真值和预测值间的误差平方和，即可对模型的可靠性做出适当的评价。</p>
+<p><strong>MLP感知机</strong></p>
+<p>神经网络其实是对生物神经元的模拟和简化，因此基于生物神经元模型可得到多层感知器MLP的基本结构，最典型的MLP包括包括三层：输入层、隐层和输出层，其中输入层输入特征，通过隐层处理数据，再到输出层输出预测结果。</p>
+<h4 id="参数含义-2"><a href="#参数含义-2" class="headerlink" title="参数含义"></a><strong>参数含义</strong></h4><p><strong>K折交叉验证</strong></p>
+<ul>
+<li>n_splits:折叠次数</li>
+<li>shuffle:是否在每次分割之前打乱顺序。</li>
+<li>random_state:随机种子，在shuffle&#x3D;&#x3D;True时使用，默认使用np.random。</li>
+<li>split：返回训练集数据的index与验证集数据的index</li>
+<li>iloc：通过行号来取行数据</li>
+<li>metrics.roc_auc_score：获取auc值</li>
+<li>F1-score：分类问题的一个衡量指标</li>
+</ul>
+<p><strong>MLP感知机</strong></p>
+<ul>
+<li>hidden_layer_sizes：元组，数值表示第i个元素代表第i个隐藏层中的神经元数量。</li>
+<li>solver：用来优化权重，其中值可以是‘lbfgs’，‘sgd’ ，‘adam’，默认为‘adam’，该值表示为机遇随机梯度的优化器，使用默认solver &#x3D;‘adam’在相对较大的数据集上效果比较好，但对小数据集中，对小数据集来说，lbfgs收敛更快效果也更好。</li>
+<li>alpha** :默认0.0001,正则化项参数</li>
+<li>activation:激活函数，其中值可以是‘identity’, ‘logistic’, ‘tanh’, ‘relu’, 默认为‘relu’，该值表示为f(x) &#x3D; max(0, x)<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from sklearn.neural_network import MLPClassifier</span><br><span class="line">import pandas as pd</span><br><span class="line">from sklearn.model_selection import KFold, StratifiedKFold</span><br><span class="line">from sklearn.metrics import roc_auc_score, f1_score</span><br><span class="line"></span><br><span class="line">def SKFold(train_data,train_label,test_data, model, random_state=1234, n_splits=10,metric=&#x27;auc&#x27;,num_round=10000,early_stopping_rounds=100):</span><br><span class="line">    # 采用分层K折交叉验证训练模型。</span><br><span class="line">    kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=random_state)</span><br><span class="line">    fold = 1</span><br><span class="line">    pred_test = []</span><br><span class="line">    for train_idx, val_idx in kfold.split(train_data, train_label):</span><br><span class="line">        random_state+=1</span><br><span class="line">        train_x = train_data.loc[train_idx]</span><br><span class="line">        train_y = train_label.loc[train_idx]</span><br><span class="line">        val_x = train_data.loc[val_idx]</span><br><span class="line">        val_y = train_label.loc[val_idx]</span><br><span class="line">        eval_set = (val_x, val_y)</span><br><span class="line">        clf = model</span><br><span class="line">        model_trained = clf.fit(train_x, train_y)</span><br><span class="line">        # model_trained = clf.fit(train_x,train_y,early_stopping_rounds=early_stopping_rounds, verbose=False)</span><br><span class="line">        # model_trained = clf.fit(train_x, train_y, eval_set=eval_set, early_stopping_rounds=early_stopping_rounds)</span><br><span class="line">        pre_y = model_trained.predict(test_data)</span><br><span class="line">        pred_test.append(pre_y)</span><br><span class="line"></span><br><span class="line">        auc_train = roc_auc_score(train_y, model_trained.predict(train_x))</span><br><span class="line">        auc_val = roc_auc_score(val_y, model_trained.predict(val_x))</span><br><span class="line">        f_score_train = f1_score(train_y, model_trained.predict(train_x))</span><br><span class="line">        f_score_val = f1_score(val_y, model_trained.predict(val_x))</span><br><span class="line">        print(&#x27;Fold: %d, AUC_train: %.4f, AUC_val: %.4f, F1-score_train: %.4f, F1-score_val: %.4f&#x27;%(fold, </span><br><span class="line">            auc_train, auc_val, f_score_train, f_score_val))</span><br><span class="line">        fold += 1</span><br><span class="line">    pred_test = pd.DataFrame(pred_test).T</span><br><span class="line">    # 将5次预测结果求平均值</span><br><span class="line">    pred_test[&#x27;average&#x27;] = pred_test.mean(axis=1)</span><br><span class="line">    pred_test[&#x27;mlp_label&#x27;] = pred_test[&#x27;average&#x27;].apply(lambda x:1 if x&gt;0.5 else 0)</span><br><span class="line"></span><br><span class="line">    return pred_test</span><br><span class="line"></span><br><span class="line"># 加载数据集</span><br><span class="line">df = pd.read_csv(&#x27;./selectFeatureDataTopInner80_1.csv&#x27;)</span><br><span class="line">train_df = df[df[&#x27;mark&#x27;]==&#x27;train&#x27;]</span><br><span class="line">test_df = df[df[&#x27;mark&#x27;]==&#x27;test&#x27;]</span><br><span class="line"></span><br><span class="line">train_label = train_df[&#x27;label&#x27;]</span><br><span class="line">train_data=train_df.drop([&#x27;mark&#x27;,&#x27;label&#x27;],axis=1)</span><br><span class="line"></span><br><span class="line">test_label = test_df[&#x27;label&#x27;]</span><br><span class="line">test_data=test_df.drop([&#x27;mark&#x27;,&#x27;label&#x27;],axis=1)</span><br><span class="line"></span><br><span class="line">scaler = MinMaxScaler()</span><br><span class="line">train_data = scaler.fit_transform(train_data)</span><br><span class="line">test_data = scaler.fit_transform(test_data)</span><br><span class="line"></span><br><span class="line"># 参考链接：https://zhuanlan.zhihu.com/p/460713425</span><br><span class="line">model_MLP = MLPClassifier(solver=&#x27;adam&#x27;,alpha = 0.1, hidden_layer_sizes=(64,32,16), activation=&#x27;relu&#x27;)</span><br><span class="line">result_SKFold_MLP = SKFold(pd.DataFrame(train_data), train_label,pd.DataFrame(test_data), model_MLP, n_splits=5)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="参数优化"><a href="#参数优化" class="headerlink" title="参数优化"></a>参数优化</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">model_MLP = MLPClassifier(solver=&#x27;lbfgs&#x27;,alpha = 0.1,power_t=0.5,hidden_layer_sizes=(256,128,64,32,16), activation=&#x27;identity&#x27;)#在solver更换为lbfgs，,hidden_layer_sizes增加了更多元组，activation更换为identity,增加power_t参数，默认为0.5，该参数表示逆扩展学习率的指数</span><br><span class="line"></span><br><span class="line">SKFold(train_data,train_label,test_data, model, random_state=1234, n_splits=7,metric=&#x27;auc&#x27;,num_round=10000,early_stopping_rounds=100)#n_splits设置为7</span><br></pre></td></tr></table></figure>
+
+<h3 id="优化结果-2"><a href="#优化结果-2" class="headerlink" title="优化结果"></a><strong>优化结果</strong></h3><p>由于元组数量的增加，牺牲一定的运算时间</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">准确度</th>
+<th align="left">灵敏度</th>
+<th align="left">特异性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">优化前</td>
+<td align="left">0.575</td>
+<td align="left">0.2</td>
+<td align="left">0.9</td>
+</tr>
+<tr>
+<td align="left">优化后</td>
+<td align="left">0.6</td>
+<td align="left">0.3</td>
+<td align="left">0.9</td>
+</tr>
+</tbody></table>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><strong>参考资料</strong></h2><h3 id="PCA-1"><a href="#PCA-1" class="headerlink" title="PCA"></a><strong>PCA</strong></h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41857483/article/details/109603845">https://blog.csdn.net/weixin_41857483/article/details/109603845</a></p>
+<h4 id="孤立森林-1"><a href="#孤立森林-1" class="headerlink" title="孤立森林"></a><strong>孤立森林</strong></h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34160248/article/details/124538485">https://blog.csdn.net/qq_34160248/article/details/124538485</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74508141">https://zhuanlan.zhihu.com/p/74508141</a></p>
+<h4 id="孤立森林可视化"><a href="#孤立森林可视化" class="headerlink" title="孤立森林可视化"></a><strong>孤立森林可视化</strong></h4><p><a target="_blank" rel="noopener" href="http://c.biancheng.net/matplotlib/what-is-matplotlib.html">http://c.biancheng.net/matplotlib/what-is-matplotlib.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45499440/article/details/123618033">https://blog.csdn.net/weixin_45499440/article/details/123618033</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/coffeetogether/article/details/117838521">https://blog.csdn.net/coffeetogether/article/details/117838521</a></p>
+<h3 id="过采样与欠采样"><a href="#过采样与欠采样" class="headerlink" title="过采样与欠采样"></a><strong>过采样与欠采样</strong></h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Dawei_01/article/details/80846371">https://blog.csdn.net/Dawei_01/article/details/80846371</a></p>
+<h4 id="DBSCAN-1"><a href="#DBSCAN-1" class="headerlink" title="DBSCAN"></a><strong>DBSCAN</strong></h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wangxiaopeng0329/article/details/53542606">https://blog.csdn.net/wangxiaopeng0329/article/details/53542606</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/515268801">https://zhuanlan.zhihu.com/p/515268801</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_31866177/article/details/89416513">https://blog.csdn.net/weixin_31866177/article/details/89416513</a></p>
+<p><strong>置信学习</strong></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/394985481">https://zhuanlan.zhihu.com/p/394985481</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1911.00068">https://arxiv.org/abs/1911.00068</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq874455953/article/details/120174943">https://blog.csdn.net/qq874455953/article/details/120174943</a></p>
+<p><strong>方差过滤</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44210796/article/details/108507267">https://blog.csdn.net/weixin_44210796/article/details/108507267</a></p>
+<h3 id="参数调整-1"><a href="#参数调整-1" class="headerlink" title="参数调整"></a><strong>参数调整</strong></h3><h4 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a><strong>逻辑回归</strong></h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/solong1989/p/9620170.html">https://www.cnblogs.com/solong1989/p/9620170.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/MR_Trustin/article/details/96614446">https://blog.csdn.net/MR_Trustin/article/details/96614446</a></p>
+<h4 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a><strong>支持向量机</strong></h4><p><a target="_blank" rel="noopener" href="https://ster.im/py_sklearn_2/#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA">https://ster.im/py_sklearn_2/#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA</a></p>
+<h3 id="树模型-1"><a href="#树模型-1" class="headerlink" title="树模型"></a><strong>树模型</strong></h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/376485485">https://zhuanlan.zhihu.com/p/376485485</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fe321e478cb4">https://www.jianshu.com/p/fe321e478cb4</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yq4y1z7jK/?spm_id_from=333.337.search-card.all.click&vd_source=b8b7b194f8dd11cd9094eab7f3621690">https://www.bilibili.com/video/BV1yq4y1z7jK</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Bb411S73w?p=1&vd_source=b8b7b194f8dd11cd9094eab7f3621690">https://www.bilibili.com/video/BV1Bb411S73w</a></p>
+<h3 id="sklearn-神经网络-1"><a href="#sklearn-神经网络-1" class="headerlink" title="sklearn 神经网络"></a><strong>sklearn 神经网络</strong></h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/63184325">https://zhuanlan.zhihu.com/p/63184325</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44491423/article/details/116711606">https://blog.csdn.net/weixin_44491423/article/details/116711606</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:19030100392@stu.xidain.edu.cn">Jianxiang Guo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/">http://example.com/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Spirit Time House</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE/">项目</a></div><div class="post_share"><div class="social-share" data-image="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2019255582.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/" target="_blank"><img class="post-qr-code-img" src="/img/" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/" target="_blank"><img class="post-qr-code-img" src="/img/" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/02/19/%E9%A1%B9%E7%9B%AE/chatGPT/"><img class="prev-cover" src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p481175587.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">chatGPT注册流程及使用指导</div></div></a></div><div class="next-post pull-right"><a href="/2022/06/26/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B3/"><img class="next-cover" src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2215098353.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Windows 平台上的 TCP 并发服务</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/02/19/%E9%A1%B9%E7%9B%AE/chatGPT/" title="chatGPT注册流程及使用指导"><img class="cover" src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p481175587.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-19</div><div class="title">chatGPT注册流程及使用指导</div></div></a></div><div><a href="/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/" title="基于Auto.js实现的起点读书自动化签到系统"><img class="cover" src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2208523422.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-25</div><div class="title">基于Auto.js实现的起点读书自动化签到系统</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/877749684.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jianxiang Guo</div><div class="author-info__description">Carpe diem</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/31VGS" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:19030100392@stu.xidain.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1063430329&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Time to learn</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B9%B3%E8%85%BA%E7%99%8C%E5%BD%B1%E5%83%8F%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">基于机器学习的乳腺癌影像分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B"><span class="toc-number">1.1.</span> <span class="toc-text">异常检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%92%E5%88%86"><span class="toc-number">1.1.1.</span> <span class="toc-text">数据集划分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DBSCAN"><span class="toc-number">1.1.2.</span> <span class="toc-text">DBSCAN</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">思路及原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1%E3%80%81%E5%AF%BB%E6%89%BE%E6%A0%B8%E5%BF%83%E7%82%B9%E5%BD%A2%E6%88%90%E4%B8%B4%E6%97%B6%E8%81%9A%E7%B1%BB%E7%B0%87"><span class="toc-number">1.1.2.1.1.</span> <span class="toc-text">1、寻找核心点形成临时聚类簇</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2%E3%80%81%E5%90%88%E5%B9%B6%E4%B8%B4%E6%97%B6%E8%81%9A%E7%B1%BB%E7%B0%87%E5%BE%97%E5%88%B0%E8%81%9A%E7%B1%BB%E7%B0%87"><span class="toc-number">1.1.2.1.2.</span> <span class="toc-text">2、合并临时聚类簇得到聚类簇</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%AE%E4%BF%A1%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.1.3.</span> <span class="toc-text">置信学习</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%8E%9F%E7%90%86-1"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">思路及原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95-1"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-1"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97"><span class="toc-number">1.1.4.</span> <span class="toc-text">孤立森林</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%8E%9F%E7%90%86-2"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">思路及原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95-2"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-2"><span class="toc-number">1.1.4.3.</span> <span class="toc-text">结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">1.1.4.4.</span> <span class="toc-text">结果可视化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8matplotlib%E5%81%9A%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">1.1.4.4.1.</span> <span class="toc-text">使用matplotlib做可视化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Excel%E5%81%9A%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">1.1.4.4.2.</span> <span class="toc-text">使用Excel做可视化</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E7%AD%9B%E9%80%89"><span class="toc-number">1.2.</span> <span class="toc-text">特征筛选</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E8%B4%9F%E6%A0%B7%E6%9C%AC"><span class="toc-number">1.2.1.</span> <span class="toc-text">正负样本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%8E%9F%E7%90%86-3"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">思路及原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-3"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PCA"><span class="toc-number">1.2.2.</span> <span class="toc-text">PCA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%8E%9F%E7%90%86-4"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">思路及原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95-3"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-4"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%B7%AE%E8%BF%87%E6%BB%A4"><span class="toc-number">1.2.3.</span> <span class="toc-text">方差过滤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%8E%9F%E7%90%86-5"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">思路及原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95-4"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-5"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%91%E6%A8%A1%E5%9E%8B%E7%AD%9B%E9%80%89"><span class="toc-number">1.2.4.</span> <span class="toc-text">树模型筛选</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">具体实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-6"><span class="toc-number">1.2.4.3.</span> <span class="toc-text">结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%B0%83%E6%95%B4"><span class="toc-number">1.3.</span> <span class="toc-text">参数调整</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92-%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-number">1.3.1.</span> <span class="toc-text">逻辑回归+交叉验证</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E5%90%AB%E4%B9%89"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">参数含义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC%E6%90%9C%E7%B4%A2"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">网格搜索</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%BB%86%E8%8A%82"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">优化细节</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%BB%93%E6%9E%9C"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">优化结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">支持向量机模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E5%90%AB%E4%B9%89-1"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">参数含义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%BB%86%E8%8A%82-1"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">优化细节</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%BB%93%E6%9E%9C-1"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">优化结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%91%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.3.</span> <span class="toc-text">树模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#XGBoost"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">XGBoost</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LightGBM"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">LightGBM</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sklearn-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.3.4.</span> <span class="toc-text">sklearn 神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E5%90%AB%E4%B9%89-2"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">参数含义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96"><span class="toc-number">1.3.4.3.</span> <span class="toc-text">参数优化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%BB%93%E6%9E%9C-2"><span class="toc-number">1.3.5.</span> <span class="toc-text">优化结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.4.</span> <span class="toc-text">参考资料</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PCA-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">PCA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97-1"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">孤立森林</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">孤立森林可视化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E9%87%87%E6%A0%B7%E4%B8%8E%E6%AC%A0%E9%87%87%E6%A0%B7"><span class="toc-number">1.4.2.</span> <span class="toc-text">过采样与欠采样</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DBSCAN-1"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">DBSCAN</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%B0%83%E6%95%B4-1"><span class="toc-number">1.4.3.</span> <span class="toc-text">参数调整</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">逻辑回归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">支持向量机</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%91%E6%A8%A1%E5%9E%8B-1"><span class="toc-number">1.4.4.</span> <span class="toc-text">树模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sklearn-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-1"><span class="toc-number">1.4.5.</span> <span class="toc-text">sklearn 神经网络</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/" title="基于Auto.js实现的起点读书自动化签到系统"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2208523422.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于Auto.js实现的起点读书自动化签到系统"/></a><div class="content"><a class="title" href="/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/" title="基于Auto.js实现的起点读书自动化签到系统">基于Auto.js实现的起点读书自动化签到系统</a><time datetime="2023-02-24T16:00:00.000Z" title="发表于 2023-02-25 00:00:00">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/19/%E9%A1%B9%E7%9B%AE/chatGPT/" title="chatGPT注册流程及使用指导"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p481175587.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="chatGPT注册流程及使用指导"/></a><div class="content"><a class="title" href="/2023/02/19/%E9%A1%B9%E7%9B%AE/chatGPT/" title="chatGPT注册流程及使用指导">chatGPT注册流程及使用指导</a><time datetime="2023-02-18T16:00:00.000Z" title="发表于 2023-02-19 00:00:00">2023-02-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/" title="基于机器学习的乳腺癌影像分析"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2019255582.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于机器学习的乳腺癌影像分析"/></a><div class="content"><a class="title" href="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/" title="基于机器学习的乳腺癌影像分析">基于机器学习的乳腺癌影像分析</a><time datetime="2023-01-01T16:00:00.000Z" title="发表于 2023-01-02 00:00:00">2023-01-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/26/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B3/" title="Windows 平台上的 TCP 并发服务"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2215098353.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Windows 平台上的 TCP 并发服务"/></a><div class="content"><a class="title" href="/2022/06/26/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B3/" title="Windows 平台上的 TCP 并发服务">Windows 平台上的 TCP 并发服务</a><time datetime="2022-06-25T16:00:00.000Z" title="发表于 2022-06-26 00:00:00">2022-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/25/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B2/" title="进程间的协调通信"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p1860928099%20(1).webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="进程间的协调通信"/></a><div class="content"><a class="title" href="/2022/06/25/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B2/" title="进程间的协调通信">进程间的协调通信</a><time datetime="2022-06-24T16:00:00.000Z" title="发表于 2022-06-25 00:00:00">2022-06-25</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2019255582.webp')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Jianxiang Guo</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Local search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'http://example.com/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/'
+    this.page.identifier = '2023/01/02/项目/工程设计文档 (3)/'
+    this.page.title = '基于机器学习的乳腺癌影像分析'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
