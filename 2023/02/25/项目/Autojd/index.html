@@ -1,0 +1,249 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>基于Auto.js实现的起点读书自动化签到系统 | Spirit Time House</title><meta name="keywords" content="项目"><meta name="author" content="Jianxiang Guo,19030100392@stu.xidain.edu.cn"><meta name="copyright" content="Jianxiang Guo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于Auto.js实现的起点读书自动化签到系统众所周知，起点app端的充值币是十分昂贵的，而其独有的签到系统可以每天为我们提供50币的额度，但是要求连续观看8个广告每个50秒。对于这种简单无脑的工作自然是选择手机自动化更为方便但是为了保证手机的安全性，当然是自己写的脚本更为安全啦，所以在查找一众资料后，我选择了使用Auto.js这一自动化工具实现功能。 什么是Auto.jsAuto.JS是Andr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Auto.js实现的起点读书自动化签到系统">
+<meta property="og:url" content="http://example.com/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/index.html">
+<meta property="og:site_name" content="Spirit Time House">
+<meta property="og:description" content="基于Auto.js实现的起点读书自动化签到系统众所周知，起点app端的充值币是十分昂贵的，而其独有的签到系统可以每天为我们提供50币的额度，但是要求连续观看8个广告每个50秒。对于这种简单无脑的工作自然是选择手机自动化更为方便但是为了保证手机的安全性，当然是自己写的脚本更为安全啦，所以在查找一众资料后，我选择了使用Auto.js这一自动化工具实现功能。 什么是Auto.jsAuto.JS是Andr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2208523422.webp">
+<meta property="article:published_time" content="2023-02-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-26T10:32:02.989Z">
+<meta property="article:author" content="Jianxiang Guo">
+<meta property="article:tag" content="项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2208523422.webp"><link rel="shortcut icon" href="/img/%E6%81%90%E6%80%96%E7%94%B5%E5%BD%B1%E2%80%94%E2%80%94%E7%94%B5%E9%94%AF%E6%83%8A%E9%AD%82.png"><link rel="canonical" href="http://example.com/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Jianxiang Guo","link":"链接: ","source":"来源: Spirit Time House","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '基于Auto.js实现的起点读书自动化签到系统',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-26 18:32:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/877749684.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/games/index.html"><i class="fa-fw fa fa-camera-retro"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/books/index.html"><i class="fa-fw fa fa-music"></i><span> 书籍</span></a></li><li><a class="site-page child" href="/movies/index.html"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2208523422.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Spirit Time House</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/games/index.html"><i class="fa-fw fa fa-camera-retro"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/books/index.html"><i class="fa-fw fa fa-music"></i><span> 书籍</span></a></li><li><a class="site-page child" href="/movies/index.html"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">基于Auto.js实现的起点读书自动化签到系统</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-24T16:00:00.000Z" title="发表于 2023-02-25 00:00:00">2023-02-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-26T10:32:02.989Z" title="更新于 2023-02-26 18:32:02">2023-02-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="基于Auto.js实现的起点读书自动化签到系统"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="基于Auto-js实现的起点读书自动化签到系统"><a href="#基于Auto-js实现的起点读书自动化签到系统" class="headerlink" title="基于Auto.js实现的起点读书自动化签到系统"></a>基于Auto.js实现的起点读书自动化签到系统</h1><p>众所周知，起点app端的充值币是十分昂贵的，而其独有的签到系统可以每天为我们提供50币的额度，但是要求连续观看8个广告每个50秒。对于这种简单无脑的工作自然是选择手机自动化更为方便<br>但是为了保证手机的安全性，当然是自己写的脚本更为安全啦，所以在查找一众资料后，我选择了使用Auto.js这一自动化工具实现功能。</p>
+<h2 id="什么是Auto-js"><a href="#什么是Auto-js" class="headerlink" title="什么是Auto.js"></a>什么是Auto.js</h2><p>Auto.JS是Android平台上的JavaScript自动化工具。</p>
+<p>它的本质是可执行自己编写的简易Javascript脚本的，尤其可以在开启“无障碍模式”的情况下对其他App进行一些操作的一个Android App，便于进行自动化操作。学习成本非常低。</p>
+<p>Auto.JS已被黑产广泛使用，以至于作者关闭了官方下载通道。</p>
+<p>而其新版AutoPro需要49元的一次性买断也对我们这种第一次尝试的用户增加了负担，所以可以先试用这个老版的，用的多了还是建议大家使用功能更加完善的新版AutoPro。<br><a target="_blank" rel="noopener" href="https://github.com/ji4ozhu/Auto.js4.1.1">https://github.com/ji4ozhu/Auto.js4.1.1</a></p>
+<h3 id="可以做的事情"><a href="#可以做的事情" class="headerlink" title="可以做的事情"></a>可以做的事情</h3><ol>
+<li>数据监控：可以监视当前手机的数据。</li>
+<li>图片监控：截图获取当前页面信息。</li>
+<li>控件操作：模拟操作手机控件。</li>
+<li>自动化工作流：编写简单的脚本，完成一系列自动化操作。如：微信自动点赞，快速抢单等。</li>
+<li>定时功能：定时执行某个脚本，来完成定时任务。如：定时打卡签到等。</li>
+</ol>
+<h3 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h3><p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/hyb1996/Auto.js">https://github.com/hyb1996/Auto.js</a><br>官方论坛：<a target="_blank" rel="noopener" href="https://www.autojs.org/">https://www.autojs.org/</a><br>在线文档：<a target="_blank" rel="noopener" href="https://hyb1996.github.io/AutoJs-Docs/#/">https://hyb1996.github.io/AutoJs-Docs/#/</a><br>简介：一个支持无障碍服务的Android平台上的Javascript IDE,其发展目标是JsBox和Workflow。<br>主要功能：由无障碍服务实现的简单易用的自动操作函数<br>协议：基于Mozilla Public License Version 2.0</p>
+<h3 id="自己动手"><a href="#自己动手" class="headerlink" title="自己动手"></a>自己动手</h3><p>提倡自动动手编写Auto.JS脚本</p>
+<ul>
+<li>安全：使用权限问题，使得Auto.js运行的脚本拥有较大的权限，使用他人的脚本可能存在风险。</li>
+<li>编写简单：JS 脚本嵌套中文，方便阅读和书写。</li>
+<li>脚本升级：应用升级需要自己升级脚本；脚本bug自己解决。</li>
+<li>获得技能。</li>
+</ul>
+<h2 id="安装auto-js"><a href="#安装auto-js" class="headerlink" title="安装auto.js"></a>安装auto.js</h2><p>安装手机端APP<br><a target="_blank" rel="noopener" href="https://github.com/ji4ozhu/Auto.js4.1.1">https://github.com/ji4ozhu/Auto.js4.1.1</a><br>首先安装VSCode，在VS Code中菜单”查看”-&gt;”扩展”-&gt;输入”Auto.js”或”hyb1996”搜索，即可看到”Auto.js-VSCodeExt”插件，安装即可。请把文件保存为.js，方便代码补全。<br><img src="/img/block/Autojs/1413364-c9792db048eb45b9.jpg"><br>打开无障碍 悬浮窗权限 输入电脑IP连接<br><img src="/img/block/Autojs/pp5j2qhtkc.png"></p>
+<h2 id="编写脚本"><a href="#编写脚本" class="headerlink" title="编写脚本"></a>编写脚本</h2><p>做好准备工作我们就可以开始编写脚本了</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">toastLog</span>(<span class="string">&#x27;即将开始起点读书自动签到功能&#x27;</span> );</span><br><span class="line"></span><br><span class="line"><span class="title function_">auto</span>();<span class="comment">//授权auto.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> 进入界面() &#123;</span><br><span class="line">    <span class="title function_">home</span>();</span><br><span class="line">    <span class="comment">// click(770, 1700);</span></span><br><span class="line">    <span class="comment">// sleep(1000);</span></span><br><span class="line">    <span class="title function_">launchApp</span>(<span class="string">&quot;起点读书&quot;</span>);</span><br><span class="line">    <span class="title function_">sleep</span>(<span class="number">5000</span>);</span><br><span class="line">    <span class="title function_">click</span>(<span class="number">1067</span>, <span class="number">2462</span>);</span><br><span class="line">    <span class="title function_">sleep</span>(<span class="number">1000</span>);</span><br><span class="line">    <span class="title function_">click</span>(<span class="number">325</span>, <span class="number">1150</span>);</span><br><span class="line">    <span class="title function_">sleep</span>(<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> 领取奖励() &#123;</span><br><span class="line">    <span class="title function_">click</span>(<span class="number">615</span>, <span class="number">1540</span>);</span><br><span class="line">    <span class="title function_">sleep</span>(<span class="number">20000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">click</span>(<span class="number">90</span>, <span class="number">160</span>);</span><br><span class="line">    <span class="title function_">sleep</span>(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">click</span>(<span class="number">617</span>, <span class="number">1654</span>);</span><br><span class="line">    <span class="title function_">sleep</span>(<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">进入界面();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>;i++)&#123;</span><br><span class="line">    领取奖励();</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">exit</span>();</span><br></pre></td></tr></table></figure>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>接着我们使用控制面板，调用auto.js:run即可开始脚本<br>最后保存到手机端便大功告成了<br><img src="/img/block/Autojs/Screenshot_2023-02-25-21-00-04-801_com.qidian.QDR.jpg"></p>
+<h2 id="附录资料"><a href="#附录资料" class="headerlink" title="附录资料"></a>附录资料</h2><p>全局</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">waitForPackage</span>(package[, period = <span class="number">200</span>])<span class="comment">//等待指定的应用出现。</span></span><br><span class="line"><span class="title function_">waitForPackage</span>(<span class="string">&quot;com.tencent.mm&quot;</span>)<span class="comment">//例如等待当前界面为微信</span></span><br><span class="line"><span class="title function_">waitForActivity</span>(activity[, period = <span class="number">200</span>])<span class="comment">//等待指定的Activity出现，period为检查Activity的间隔。</span></span><br><span class="line"><span class="title function_">waitForActivity</span>(<span class="string">&quot;com.ss.android.ugc.aweme.following.ui.FollowRelationTabActivity&quot;</span>)<span class="comment">//等待抖音其他用户的关注列表页面出现：</span></span><br><span class="line"><span class="title function_">sleep</span>(n)<span class="comment">//毫秒数</span></span><br><span class="line"><span class="title function_">log</span>(<span class="string">&quot;message&quot;</span>)<span class="comment">//打印日志</span></span><br><span class="line"><span class="title function_">toast</span>(<span class="string">&quot;message&quot;</span>)<span class="comment">//气泡提示</span></span><br><span class="line"><span class="title function_">toastLog</span>(<span class="string">&quot;message&quot;</span>)<span class="comment">//打印日志并气泡提示</span></span><br><span class="line"><span class="title function_">setClip</span>(<span class="string">&quot;text&quot;</span>)<span class="comment">//设置剪贴板内容</span></span><br><span class="line"><span class="title function_">exit</span>()<span class="comment">//立即停止脚本运行</span></span><br><span class="line"><span class="title function_">random</span>(min, max)<span class="comment">//随机数</span></span><br></pre></td></tr></table></figure>
+<p>应用</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">launch</span>(<span class="string">&quot;包名&quot;</span>)<span class="comment">//通过包名启动应用</span></span><br><span class="line"><span class="title function_">launchPackage</span>(<span class="string">&quot;包名&quot;</span>)<span class="comment">//通过包名启动应用</span></span><br><span class="line"><span class="title function_">launchApp</span>(appName)<span class="comment">//通过名称启动应用</span></span><br><span class="line"><span class="title function_">getPackageName</span>(appName)<span class="comment">//获取应用名称对应的已安装的应用的包名</span></span><br><span class="line"><span class="title function_">getAppName</span>(<span class="string">&quot;包名&quot;</span>)<span class="comment">//获取应用包名对应的已安装的应用的名称</span></span><br><span class="line">app.<span class="title function_">openAppSetting</span>(<span class="string">&quot;包名&quot;</span>)<span class="comment">//打开应用的详情页(设置页)。返回false; 否则返回true(全局)</span></span><br><span class="line">app.<span class="title function_">editFile</span>(<span class="string">&quot;/sdcard/1.txt/);//用其他应用编辑文件文本文件</span></span><br><span class="line"><span class="string">app.uninstall(&quot;</span>com.<span class="property">tencent</span>.<span class="property">mobileqq</span><span class="string">&quot;);//卸载应用</span></span><br><span class="line"><span class="string">app.openUrl(&quot;</span>包名<span class="string">&quot;);//浏览器打开网站，Url，如果不以&quot;</span><span class="attr">http</span>:<span class="comment">//&quot;或&quot;https://“开头则默认是&quot;http://”</span></span><br></pre></td></tr></table></figure>
+<p>坐标</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">setScreenMetrics</span>(width, height)在width*height的设备中，坐标操作自适应</span><br><span class="line">width &#123;number&#125; <span class="comment">//屏幕宽度，单位像素</span></span><br><span class="line">height &#123;number&#125; <span class="comment">//屏幕高度，单位像素</span></span><br><span class="line"><span class="title function_">click</span>(x, y)<span class="comment">//点击</span></span><br><span class="line"><span class="title function_">longClick</span>(x, y)<span class="comment">//长按</span></span><br><span class="line"><span class="title function_">press</span>(x, y, duration)<span class="comment">//按住</span></span><br><span class="line"><span class="title function_">swipe</span>(x1, y1, x2, y2, duration)<span class="comment">//滑动</span></span><br><span class="line"><span class="title function_">swipeEx</span>(x1, y1, x2, y2, duration)<span class="comment">//仿真随机曲线滑动</span></span><br><span class="line"><span class="title function_">gesture</span>(duration, [x1, y1], [x2, y2], …)<span class="comment">//手势路径，时长2s</span></span><br><span class="line"><span class="title function_">gestures</span>([delay1, duration1, [x1, y1], [x2, y2], …], [delay2, duration2, [x3, y3], [x4, y4], …], …)<span class="comment">//延时多点手势路径</span></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3b24656b22c9">https://www.jianshu.com/p/3b24656b22c9</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:19030100392@stu.xidain.edu.cn">Jianxiang Guo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/">http://example.com/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Spirit Time House</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE/">项目</a></div><div class="post_share"><div class="social-share" data-image="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2208523422.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/" target="_blank"><img class="post-qr-code-img" src="/img/" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/" target="_blank"><img class="post-qr-code-img" src="/img/" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/02/19/%E9%A1%B9%E7%9B%AE/chatGPT/"><img class="next-cover" src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p481175587.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">chatGPT注册流程及使用指导</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/02/19/%E9%A1%B9%E7%9B%AE/chatGPT/" title="chatGPT注册流程及使用指导"><img class="cover" src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p481175587.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-19</div><div class="title">chatGPT注册流程及使用指导</div></div></a></div><div><a href="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/" title="基于机器学习的乳腺癌影像分析"><img class="cover" src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2019255582.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-02</div><div class="title">基于机器学习的乳腺癌影像分析</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/877749684.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jianxiang Guo</div><div class="author-info__description">Patience is the key in life</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/31VGS" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:19030100392@stu.xidain.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1063430329&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Time to learn</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EAuto-js%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%B5%B7%E7%82%B9%E8%AF%BB%E4%B9%A6%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%88%B0%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">基于Auto.js实现的起点读书自动化签到系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFAuto-js"><span class="toc-number">1.1.</span> <span class="toc-text">什么是Auto.js</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E4%BB%A5%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85"><span class="toc-number">1.1.1.</span> <span class="toc-text">可以做的事情</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.2.</span> <span class="toc-text">项目介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B"><span class="toc-number">1.1.3.</span> <span class="toc-text">自己动手</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85auto-js"><span class="toc-number">1.2.</span> <span class="toc-text">安装auto.js</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.</span> <span class="toc-text">编写脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C"><span class="toc-number">1.4.</span> <span class="toc-text">运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E8%B5%84%E6%96%99"><span class="toc-number">1.5.</span> <span class="toc-text">附录资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/" title="基于Auto.js实现的起点读书自动化签到系统"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2208523422.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于Auto.js实现的起点读书自动化签到系统"/></a><div class="content"><a class="title" href="/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/" title="基于Auto.js实现的起点读书自动化签到系统">基于Auto.js实现的起点读书自动化签到系统</a><time datetime="2023-02-24T16:00:00.000Z" title="发表于 2023-02-25 00:00:00">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/19/%E9%A1%B9%E7%9B%AE/chatGPT/" title="chatGPT注册流程及使用指导"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p481175587.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="chatGPT注册流程及使用指导"/></a><div class="content"><a class="title" href="/2023/02/19/%E9%A1%B9%E7%9B%AE/chatGPT/" title="chatGPT注册流程及使用指导">chatGPT注册流程及使用指导</a><time datetime="2023-02-18T16:00:00.000Z" title="发表于 2023-02-19 00:00:00">2023-02-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/" title="基于机器学习的乳腺癌影像分析"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2019255582.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于机器学习的乳腺癌影像分析"/></a><div class="content"><a class="title" href="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/" title="基于机器学习的乳腺癌影像分析">基于机器学习的乳腺癌影像分析</a><time datetime="2023-01-01T16:00:00.000Z" title="发表于 2023-01-02 00:00:00">2023-01-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/26/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B3/" title="Windows 平台上的 TCP 并发服务"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2215098353.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Windows 平台上的 TCP 并发服务"/></a><div class="content"><a class="title" href="/2022/06/26/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B3/" title="Windows 平台上的 TCP 并发服务">Windows 平台上的 TCP 并发服务</a><time datetime="2022-06-25T16:00:00.000Z" title="发表于 2022-06-26 00:00:00">2022-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/25/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B2/" title="进程间的协调通信"><img src="/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p1860928099%20(1).webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="进程间的协调通信"/></a><div class="content"><a class="title" href="/2022/06/25/%E5%AE%9E%E9%AA%8C/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B2/" title="进程间的协调通信">进程间的协调通信</a><time datetime="2022-06-24T16:00:00.000Z" title="发表于 2022-06-25 00:00:00">2022-06-25</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/%E5%9B%9E%E5%BF%86%E6%9D%80/p2208523422.webp')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Jianxiang Guo</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Local search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'http://example.com/2023/02/25/%E9%A1%B9%E7%9B%AE/Autojd/'
+    this.page.identifier = '2023/02/25/项目/Autojd/'
+    this.page.title = '基于Auto.js实现的起点读书自动化签到系统'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
