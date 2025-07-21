@@ -171,7 +171,7 @@
 <h5 id="2、合并临时聚类簇得到聚类簇"><a href="#2、合并临时聚类簇得到聚类簇" class="headerlink" title="2、合并临时聚类簇得到聚类簇"></a><strong>2、合并临时聚类簇得到聚类簇</strong></h5><p>对于每一个临时聚类簇，检查其中的点是否为核心点，如果是，将该点对应的临时聚类簇和当前临时聚类簇合并，得到新的临时聚类簇。</p>
 <p>重复此操作，直到当前临时聚类簇中的每一个点要么不在核心点列表，要么其密度直达的点都已经在该临时聚类簇，该临时聚类簇升级成为聚类簇。</p>
 <p>继续对剩余的临时聚类簇进行相同的合并操作，直到全部临时聚类簇被处理。反复寻找这些核心点直接密度可达或密度可达的点，将其加入到相应的类，对于核心点发生密度可达状况的类，给予合并</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.001.png" alt="DFZIMAYBYY"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.001.png" alt="DFZIMAYBYY"></p>
 <p>DBSCAN算法可以抽象为以下几步：</p>
 <p>1）找到每个样本的邻域内的样本个数，若个数大于等于MinPts，则该样本为核心点；</p>
 <p>2）找到每个核心样本密度直达和密度可达的样本，且该样本亦为核心样本，忽略所有的非核心样本；</p>
@@ -184,7 +184,7 @@
 <p><code>                  </code>2，计算样本i到其他某簇Cj 的所有样本的平均距离bij，称为样本i与簇Cj 的不相似度。定义为样本i的<strong>簇间不相似度</strong>：bi &#x3D;min{bi1, bi2, …, bik}</p>
 <p><code>                            </code><strong>bi越大，说明样本i越不属于其他簇。</strong></p>
 <p><code>                   </code>3，根据样本i的簇内不相似度a i 和簇间不相似度b i ，定义样本i的<strong>轮廓系数</strong>：</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.002.png" alt="NNZYMAYA24"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.002.png" alt="NNZYMAYA24"></p>
 <p><code>                   </code>4，判断：</p>
 <p><code>                            </code>si接近1，则说明样本i聚类合理；</p>
 <p><code>                            </code>si接近-1，则说明样本i更应该分类到另外的簇；</p>
@@ -202,9 +202,9 @@
 <p>完整代码</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line"><span class="keyword">import</span> sklearn.cluster <span class="keyword">as</span> skc  <span class="comment"># 密度聚类</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics   <span class="comment"># 评估模型</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对良性样本训练</span></span><br><span class="line">label1_df = df[df[<span class="string">&#x27;label&#x27;</span>] == <span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(label1_df.shape)</span><br><span class="line"></span><br><span class="line">label1_data = label1_df.drop([<span class="string">&#x27;subjectName&#x27;</span>,<span class="string">&#x27;label&#x27;</span>,<span class="string">&#x27;肿瘤类型&#x27;</span>,<span class="string">&#x27;mark&#x27;</span>,<span class="string">&#x27;QC&#x27;</span>],axis=<span class="number">1</span>)</span><br><span class="line"><span class="comment">#设置半径为2880，最小样本量为19，遍历得轮廓系数最高 0.8164716886625932</span></span><br><span class="line">db = skc.DBSCAN(eps=<span class="number">1500</span>, min_samples = <span class="number">15</span>).fit(label1_data) <span class="comment">#DBSCAN聚类方法 还有参数，matric = &quot;&quot;距离计算方法</span></span><br><span class="line">label1_df[<span class="string">&#x27;labels&#x27;</span>] = db.labels_</span><br><span class="line">labels = db.labels_  <span class="comment">#和X同一个维度，labels对应索引序号的值 为她所在簇的序号，也就是聚类之后的结果。若簇编号为-1，表示为噪声</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;每个样本的簇标号:&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(labels)</span><br><span class="line">raito = <span class="built_in">len</span>(labels[labels[:] == -<span class="number">1</span>]) / <span class="built_in">len</span>(labels)  <span class="comment">#计算噪声点个数占总数的比例</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;噪声比:&#x27;</span>, <span class="built_in">format</span>(raito, <span class="string">&#x27;.2%&#x27;</span>))</span><br><span class="line"> </span><br><span class="line">n_clusters_ = <span class="built_in">len</span>(<span class="built_in">set</span>(labels)) - (<span class="number">1</span> <span class="keyword">if</span> -<span class="number">1</span> <span class="keyword">in</span> labels <span class="keyword">else</span> <span class="number">0</span>)  <span class="comment"># 获取分簇的数目</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;分簇的数目: %d&#x27;</span> % n_clusters_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;轮廓系数: %0.3f&quot;</span> % metrics.silhouette_score(label1_data, labels)) <span class="comment">#轮廓系数评价聚类的好坏</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;噪声的所有样本:&#x27;</span>)</span><br><span class="line">new_cluster = label1_data[labels == -<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(new_cluster.shape)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.manifold <span class="keyword">import</span> TSNE</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> manifold, datasets</span><br><span class="line">new_cluster_1 = label1_data[labels == <span class="number">0</span>]</span><br><span class="line"><span class="comment"># t-SNE的降维与可视化</span></span><br><span class="line">ts = manifold.TSNE(n_components=<span class="number">2</span>, init=<span class="string">&#x27;pca&#x27;</span>, random_state=<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">y = ts.fit_transform(new_cluster_1)</span><br><span class="line">x = ts.fit_transform(new_cluster)</span><br><span class="line">plt.scatter(y[:, <span class="number">0</span>], y[:, <span class="number">1</span>], cmap=plt.cm.Spectral)</span><br><span class="line">plt.scatter(x[:, <span class="number">0</span>], x[:, <span class="number">1</span>], cmap=plt.cm.Spectral)</span><br><span class="line"><span class="comment"># 显示图像</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 <h4 id="结果"><a href="#结果" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>遍历得轮廓系数最高的参数选择后结果</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.003.png" alt="BZ2IMAYAGA"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.003.png" alt="BZ2IMAYAGA"></p>
 <p>聚类结果</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.004.png" alt="E52IMAYAVY"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.004.png" alt="E52IMAYAVY"></p>
 <p>实验测试结果如下：</p>
 <table>
 <thead>
@@ -326,23 +326,23 @@
 <p>在 Angluin 和Laird 分类噪声的假设基础上，将 CL 泛化到直接估计噪声标签和无损标签之间的联合分布。</p>
 <p>实现置信学习，首先估计噪声标签和真实标签的联合分布，然后找出并过滤掉错误样本，最后过滤错误样本后，重新训练。</p>
 <p>为获取上述的联合分布，需要使用cheanlab包下的find_label_issues函数，对“每个样本实际属于哪个类别”，“模型预测每个样本在每个类别的概率“，”选择是否是噪声数据的策略”这三个参数设置</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.005.png" alt="53TY2AYA4I"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.005.png" alt="53TY2AYA4I"></p>
 <h4 id="实现方法-1"><a href="#实现方法-1" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>导入置信学习的cheanlab</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> cleanlab.classification <span class="keyword">import</span> CleanLearning</span><br><span class="line"><span class="keyword">from</span> cleanlab.<span class="built_in">filter</span> <span class="keyword">import</span> find_label_issues</span><br></pre></td></tr></table></figure>
 <p>所用到的方法及变量解释</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ordered_label_issues = find_label_issues(</span><br><span class="line">    labels=train_label, <span class="comment"># 每个样本实际属于哪个类别</span></span><br><span class="line">    pred_probs = grid_model.predict_proba(train_data),  <span class="comment"># 模型预测每个样本在每个类别的概率</span></span><br><span class="line">    return_indices_ranked_by=<span class="string">&#x27;self_confidence&#x27;</span>, <span class="comment">#选择是否是噪声数据的策略</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(ordered_label_issues.shape)</span><br></pre></td></tr></table></figure>
 <p>完整代码</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> cgi <span class="keyword">import</span> print_arguments</span><br><span class="line"><span class="keyword">from</span> cleanlab.classification <span class="keyword">import</span> CleanLearning</span><br><span class="line"><span class="keyword">from</span> cleanlab.<span class="built_in">filter</span> <span class="keyword">import</span> find_label_issues</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">ordered_label_issues = find_label_issues(</span><br><span class="line">    labels=train_label, <span class="comment"># 每个样本实际属于哪个类别</span></span><br><span class="line">    pred_probs = grid_model.predict_proba(train_data),  <span class="comment"># 模型预测每个样本在每个类别的概率</span></span><br><span class="line">    return_indices_ranked_by=<span class="string">&#x27;self_confidence&#x27;</span>, <span class="comment">#选择是否是噪声数据的策略</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(ordered_label_issues.shape)</span><br><span class="line"><span class="comment"># 将良性和恶性的分开</span></span><br><span class="line">noise_data11 = noise_data1[noise_data1[<span class="string">&#x27;label&#x27;</span>] == <span class="number">1</span>]</span><br><span class="line">noise_data10 = noise_data1[noise_data1[<span class="string">&#x27;label&#x27;</span>] == <span class="number">0</span>]</span><br><span class="line">cleaned_data11 = cleaned_data1[cleaned_data1[<span class="string">&#x27;label&#x27;</span>] == <span class="number">1</span>]</span><br><span class="line">cleaned_data10 = cleaned_data1[cleaned_data1[<span class="string">&#x27;label&#x27;</span>] == <span class="number">0</span>]</span><br><span class="line">cleaned_data11.to_csv(<span class="string">&#x27;./可视化/cleaned_data11.csv&#x27;</span>,index = <span class="literal">False</span>)</span><br><span class="line">cleaned_data10.to_csv(<span class="string">&#x27;./可视化/cleaned_data10.csv&#x27;</span>,index = <span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="结果-1"><a href="#结果-1" class="headerlink" title="结果"></a><strong>结果</strong></h4><p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.006.png" alt="V3UY2AYAOA"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.007.png" alt="ZTUY2AYBW4"></p>
+<h4 id="结果-1"><a href="#结果-1" class="headerlink" title="结果"></a><strong>结果</strong></h4><p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.006.png" alt="V3UY2AYAOA"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.007.png" alt="ZTUY2AYBW4"></p>
 <p>总结：以上结果表明比未优化稍微好一点，但相差不大。</p>
 <h3 id="孤立森林"><a href="#孤立森林" class="headerlink" title="孤立森林"></a><strong>孤立森林</strong></h3><h4 id="思路及原理-2"><a href="#思路及原理-2" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>孤立森林根据离群点与正常值较为疏离，容易被孤立的特点，通过建立决策树，将离群点分离出来（异常样本更容易快速落入叶子结点，距离根节点更近）。</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.008.png" alt="HHGH6AYAKQ"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.008.png" alt="HHGH6AYAKQ"></p>
 <p>再利用集成学习bagging的思想，建立多颗决策树，在多棵树上都会被较先分离出来的就是离群点，用异常得分作为判断依据（sklearn中label是1为正常值，-1为异常值）</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.009.png" alt="IXGH6AYAJY"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.009.png" alt="IXGH6AYAJY"></p>
 <p>实现思路：</p>
 <p>先把两个训练集和一个测试集数据合在一起，通过label标签将良恶性分开，再各自通过离群点检测算法，将离群点筛选出来，完成后放入各模型中测试，并与不做处理的结果进行对比</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.010.png" alt="53GH6AYAHE"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.010.png" alt="53GH6AYAHE"></p>
 <h4 id="实现方法-2"><a href="#实现方法-2" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>使用sklearn中的孤立森林模型</p>
 <p>先导入sklearn中的孤立森林包</p>
 <p>from sklearn.ensemble import IsolationForest</p>
@@ -359,7 +359,7 @@
 <h4 id="结果-2"><a href="#结果-2" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>对异常类型和非异常类型做直方图分布可视化如下</p>
 <p>训练集v1（688），v2（73）+测试集（80），共841个样本</p>
 <p>经过独立森林筛选后，从训练集中筛掉67个样本，从测试集中删掉7个，一共74个（良性22个，恶性52个），剩余样本767个</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.011.png" alt="NDGX6AYA3M"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.011.png" alt="NDGX6AYA3M"></p>
 <p>实验测试结果如下：</p>
 <table>
 <thead>
@@ -472,20 +472,20 @@
 </tr>
 </tbody></table>
 <h4 id="结果可视化"><a href="#结果可视化" class="headerlink" title="结果可视化"></a><strong>结果可视化</strong></h4><h5 id="使用matplotlib做可视化"><a href="#使用matplotlib做可视化" class="headerlink" title="使用matplotlib做可视化"></a><strong>使用matplotlib做可视化</strong></h5><p>利用matplotlib对年龄，肿瘤大小，乳房大小，肿瘤类型中的全部值，正常值和异常值分别做良恶性人数可视化。其中年龄和肿瘤大小为数值型数据，使用直方图进行可视化；乳房大小和肿瘤类型为文本型数据，使用条形图做可视化，可视化结果如下</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.012.png" alt="TP4I2AYA34"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.013.png" alt="T74I2AYBDA"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.014.png" alt="UH4I2AYAWQ"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.015.png" alt="V34I2AYAOY"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.016.png" alt="WL4I2AYA34"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.017.png" alt="WX4I2AYAOA"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.012.png" alt="TP4I2AYA34"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.013.png" alt="T74I2AYBDA"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.014.png" alt="UH4I2AYAWQ"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.015.png" alt="V34I2AYAOY"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.016.png" alt="WL4I2AYA34"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.017.png" alt="WX4I2AYAOA"></p>
 <h5 id="使用Excel做可视化"><a href="#使用Excel做可视化" class="headerlink" title="使用Excel做可视化"></a><strong>使用Excel做可视化</strong></h5><p>使用Excel对全部数据，正常值，和异常值的良恶性样本所占比例进行可视化分析，观察在年龄，肿瘤大小，乳房大小上数据的分布特征，对后续优化提供建议。</p>
 <p>如在肿瘤大小中，观察到小于0.6的样本中基本为良性，则在后续模型训练时，可对这一范围内的样本加大良性判定权重。</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.018.png" alt="IX4Y2AYAS4"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.019.png" alt="JH4Y2AYABM"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.020.png" alt="JT4Y2AYAU4"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.021.png" alt="OD4Y2AYAPA"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.022.png" alt="OP4Y2AYA34"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.023.png" alt="O34Y2AYAHA"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.018.png" alt="IX4Y2AYAS4"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.019.png" alt="JH4Y2AYABM"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.020.png" alt="JT4Y2AYAU4"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.021.png" alt="OD4Y2AYAPA"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.022.png" alt="OP4Y2AYA34"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.023.png" alt="O34Y2AYAHA"></p>
 <h2 id="特征筛选"><a href="#特征筛选" class="headerlink" title="特征筛选"></a><strong>特征筛选</strong></h2><h3 id="正负样本"><a href="#正负样本" class="headerlink" title="正负样本"></a><strong>正负样本</strong></h3><h4 id="思路及原理-3"><a href="#思路及原理-3" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>原测试数据集中包含189个正样本（label&#x3D;1）502个负样本，其中测试数据集由train_data_v1.csv组成，正样本数量过低可能使测试中的准确度，灵敏度及特异性降低，故采用过采样与欠采样结合的方式均衡正负样本比例。</p>
 <p><strong>过采样：</strong>重复正比例数据，实际上没有为模型引入更多数据，过分强调正比例数据，会放大正比例噪音对模型的影响。</p>
 <p><strong>欠采样</strong>：丢弃大量数据，和过采样一样会存在过拟合的问题。</p>
@@ -495,19 +495,19 @@
 <p>欠采样与正样本相同数量的负样本</p>
 <p>negative_data &#x3D; train_df[train_df[‘label’]&#x3D;&#x3D;0].sample(n&#x3D;372,random_state&#x3D;1)<br>train_df_better &#x3D; negative_data.append(positive_data_2)</p>
 <p>最终正负样本数：372+372&#x3D;744个</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.024.png" alt="GRGIKAYAYU"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.024.png" alt="GRGIKAYAYU"></p>
 <h4 id="结果-3"><a href="#结果-3" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>比较准确度，灵敏度及特异性改变情况</p>
 <p>未使用正负样本均衡</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.025.png" alt="HFYIMAYAWA"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.025.png" alt="HFYIMAYAWA"></p>
 <p>优化后结果</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.026.png" alt="KVYIMAYAJY"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.026.png" alt="KVYIMAYAJY"></p>
 <p>优化结果分析</p>
 <p>对逻辑回归、树模型和神经网络有一定的优化效果，但对支持向量机模型效果较少，对灵敏度特异性的优化程度较低，波动较大，且可能存在数据本身存在异常的影响。</p>
 <h3 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a><strong>PCA</strong></h3><h4 id="思路及原理-4"><a href="#思路及原理-4" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>所给的数据集（data_v1_allFeatures.csv）中有290个特征，我们尝试在特征筛选阶段，使用PCA降维的方式对数据做降维处理，以加快模型训练速度，尝试提高模型的准确度，灵敏度及特异性。</p>
 <p>PCA即主成分分析，其通过投影的方式将高维的数据映射到低维的空间中，并保证在所投影的维度上，原数据的信息量最大，从而使用较少的数据维度，保留住较多的原始数据特性。</p>
 <p>如下图例子所示，通过变换坐标轴的方式，消除了三个样本点的x2轴（即x2特征），将二维数据降为一维，同时保证了三个样本点的区分度</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.027.png" alt="BTEH6AYB3M"></p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.028.png" alt="DHEH6AYD3M"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.027.png" alt="BTEH6AYB3M"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.028.png" alt="DHEH6AYD3M"></p>
 <h4 id="实现方法-3"><a href="#实现方法-3" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>使用sklearn中的PCA模型</p>
 <p>先导入sklearn中的PCA包</p>
 <p>from sklearn.decomposition import PCA</p>
@@ -525,7 +525,7 @@
 <h4 id="结果-4"><a href="#结果-4" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>在PCA中，信息用方差来表示</p>
 <p>explained_variance：降维后的方差</p>
 <p>通过绘制图像来观察，在不同保留维度下，降维后所有成分的方差和</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.029.png" alt="4HEX6AYASM"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.029.png" alt="4HEX6AYASM"></p>
 <p>以下为n不同取值时训练模型所得出的结果</p>
 <table>
 <thead>
@@ -712,7 +712,7 @@
 <h3 id="方差过滤"><a href="#方差过滤" class="headerlink" title="方差过滤"></a><strong>方差过滤</strong></h3><h4 id="思路及原理-5"><a href="#思路及原理-5" class="headerlink" title="思路及原理"></a><strong>思路及原理</strong></h4><p>如果样本在这个特征上基本没有差异，从数学角度上看，就代表一个特征本身的方差很小。这就为我们所做的工作提供了一个思路————方差过滤</p>
 <p>实现方差过滤，利用sklearn中的方差过滤模型。这是通过特征本身的方差来筛选特征的类。该类有着重要参数threshold，表示方差的阈值，舍弃所有方差小于threshold的特征，如果不填，则阈值默认设置为0，即删除所有的记录都相同的特征。但是初始295个经过阈值默认为0下的筛选依然剩下了290个特征，因此可以看出阈值的选择是值得需要探讨的地方。</p>
 <p>最终，在阈值选择方面打算留下一半的特征，即设定一个让特征总数减半的方差阈值，只要找到特征方差的中位数，再将这个中位数作为参数threshold的值输入。</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.030.png" alt="DPWI2AYADA"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.030.png" alt="DPWI2AYADA"></p>
 <h4 id="实现方法-4"><a href="#实现方法-4" class="headerlink" title="实现方法"></a><strong>实现方法</strong></h4><p>导入sklearn中<strong>VarianceThreshold</strong></p>
 <p>from sklearn.feature_selection import VarianceThreshold</p>
 <p>其函数所需参数为：</p>
@@ -722,16 +722,16 @@
 <p>实现代码如下：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> VarianceThreshold  <span class="comment"># 方差过滤</span></span><br><span class="line"><span class="comment">#selector = VarianceThreshold()</span></span><br><span class="line">selector = VarianceThreshold(np.median(train_data.var().values))<span class="comment">#筛选一半的特征，采用中位数做阈值</span></span><br><span class="line">x_train1 = selector.fit_transform(train_data)  <span class="comment"># 方差过滤</span></span><br><span class="line">x_test1 = selector.transform(test_data)  </span><br><span class="line"><span class="built_in">print</span>(x_train1.shape)</span><br><span class="line"><span class="built_in">print</span>(x_test1.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保留特征名称</span></span><br><span class="line"><span class="keyword">import</span> turtle</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">all_name = train_data.columns.values.tolist()  <span class="comment"># 获得所有的特征名称</span></span><br><span class="line">select_name_index0 = selector.get_support(indices=<span class="literal">True</span>)  <span class="comment"># 留下特征的索引值，list格式</span></span><br><span class="line">select_name0 = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> select_name_index0:</span><br><span class="line">    select_name0.append(all_name[i])</span><br><span class="line"><span class="built_in">print</span>(select_name0)</span><br><span class="line">select_name0=pd.to_numeric(select_name0,errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br><span class="line">select_name0 = pd.DataFrame(select_name0)</span><br><span class="line"><span class="built_in">print</span>(select_name0.dtypes)</span><br><span class="line"><span class="comment">#x_test1=pd.DataFrame(x_test1)</span></span><br><span class="line"><span class="comment">#x_test1=pd.concat([x_test1,select_name0],axis=0)</span></span><br><span class="line">df5 = np.vstack((x_test1,x_train1))</span><br><span class="line">df5 = pd.DataFrame(df5)</span><br><span class="line">df5[<span class="string">&#x27;label&#x27;</span>]=df_label</span><br><span class="line">df5[<span class="string">&#x27;mark&#x27;</span>]=df_mark</span><br><span class="line"><span class="built_in">print</span>(df5.shape)</span><br><span class="line">df5.to_csv(<span class="string">&#x27;./test.csv&#x27;</span>,index = <span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 <h4 id="结果-5"><a href="#结果-5" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>选择筛取一半的特征训练模型所得出的结果</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.031.png" alt="BHXY2AYAIY"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.031.png" alt="BHXY2AYAIY"></p>
 <p>总结：不断调整阈值，观察阈值改变在此模型的表现，结果表现时好时坏，以左图阈值选择为一半为例，方差筛选可能会导致部分有效特征被筛选掉。因此如何去更好的利用这一算法，我们认为，可以在特征筛选上，先使用方差筛选，阈值设置为较小的值或者0，优先筛选掉明显用不上的特征，接着继续选择更优的特征选择方法，继续削减特征数量。</p>
 <h3 id="树模型筛选"><a href="#树模型筛选" class="headerlink" title="树模型筛选"></a><strong>树模型筛选</strong></h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a><strong>思路</strong></h4><p>使用三种树模型，XGBoost，Extra-Tree和RandomForest来评估数据集中特征的重要性，分别求出三种模型中，各自认为重要性最高的100个特征值，然后再求交集，选出三种模型均认为较为重要的特征</p>
 <h4 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a><strong>具体实现</strong></h4><p>调用sklearn中的feature_importance对特征的重要性进行评估，一般来说，重要性提供了一个评分，它表明每个特性在模型中增强决策树的构建中有多有用或多有价值。属性用于使用决策树做出关键决策的次数越多，其相对重要性就越高。</p>
 <p>传入XGBoost模型所得结果如下</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.032.png" alt="QCY4SAYAFE"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.032.png" alt="QCY4SAYAFE"></p>
 <p>传入Extra-Tree模型所得结果如下</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.033.png" alt="UOY4SAYAEU"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.033.png" alt="UOY4SAYAEU"></p>
 <p>传入RandomForest模型所得结果如下</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.034.png" alt="YCY4SAYA2Y"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.034.png" alt="YCY4SAYA2Y"></p>
 <h4 id="结果-6"><a href="#结果-6" class="headerlink" title="结果"></a><strong>结果</strong></h4><p>对三种模型所求出的前一百个重要特征求交集，最终选出95个重要特征，完成筛选</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将不同筛选模型得到的前100个特征求交集</span></span><br><span class="line">feat_imp_xgb = feat_imp_xgb_100.index.values</span><br><span class="line">feat_imp_rfc = feat_imp_rfc_100.index.values</span><br><span class="line">feat_imp_Extra = feat_imp_Extra_100.index.values</span><br><span class="line"></span><br><span class="line">feat_imp_all = <span class="built_in">list</span>(feat_imp_xgb) + <span class="built_in">list</span>(feat_imp_rfc) + <span class="built_in">list</span>(feat_imp_Extra)</span><br><span class="line"><span class="comment"># 通过字典统计每个元素出现个数</span></span><br><span class="line">feat_dic = &#123;&#125;</span><br><span class="line">keys = []</span><br><span class="line"><span class="keyword">for</span> feat <span class="keyword">in</span> feat_imp_all:</span><br><span class="line">    <span class="keyword">if</span> feat <span class="keyword">not</span> <span class="keyword">in</span> feat_dic.keys():</span><br><span class="line">        feat_dic[feat] = feat_imp_all.count(feat) <span class="comment"># 如果列表里面的元素不在字典key值中，那么创建一个新的key并统计元素出现的次数</span></span><br><span class="line"><span class="comment"># 如果出现的次数大于等于2，则说明该特征比较重要</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key,value <span class="keyword">in</span> feat_dic.items():</span><br><span class="line">    <span class="keyword">if</span> value &gt;= <span class="number">2</span>:</span><br><span class="line">        keys.append(key)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(keys))</span><br></pre></td></tr></table></figure>
 <h2 id="参数调整"><a href="#参数调整" class="headerlink" title="参数调整"></a><strong>参数调整</strong></h2><p>使用网格搜索的方式进行参数调整。</p>
@@ -823,7 +823,7 @@
 <h3 id="树模型"><a href="#树模型" class="headerlink" title="树模型"></a><strong>树模型</strong></h3><h4 id="XGBoost"><a href="#XGBoost" class="headerlink" title="XGBoost"></a><strong>XGBoost</strong></h4><p>集成算法通过在数据上构建多个弱评估器，汇总所有弱评估器的建模结果，以获取比单个模型更好的回归或分类表现。弱评估器被定义为是表现至少比随机猜测更好的模型，即预测准确率不低于50%的任意模型</p>
 <p>方法一采用sklearn中的API与其他机器学习模型一样进行fit和predict的流程来运行XGBoost</p>
 <p>方法二采用xgboost原生接口，采用train和predict，方便调参</p>
-<p><img src="/img/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.035.png" alt="3PA4SAYA4Q"></p>
+<p><img src="/2023/01/02/%E9%A1%B9%E7%9B%AE/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3%20(3)/Aspose.Words.e44d2fdf-4ed4-4509-adad-57b9f558018a.035.png" alt="3PA4SAYA4Q"></p>
 <p>max_depth：基学习器的深度，增加该值会使基学习器变得更加复杂，荣易过拟合，设为0表示不设限制，对于<strong>depth-wise</strong>的基学习器学习方法需要控制深度</p>
 <p>min_child_weight：子节点所需的样本权重和(hessian)的最小阈值，若是基学习器切分后得到的叶节点中样本权重和低于该阈值则不会进一步切分，在线性模型中该值就对应每个节点的最小样本数，该值越大模型的学习约保守，同样用于防止模型过拟合</p>
 <p>gamma：叶节点进一步切分的最小损失下降的阈值(超过该值才进一步切分)，越大则模型学习越保守，用来控制基学习器的复杂度</p>
